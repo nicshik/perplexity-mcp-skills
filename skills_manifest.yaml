@@ -1,0 +1,13 @@
+schema_version: "0.1"
+bundle_name: "perplexity-mcp-skills"
+maintainer: "nick"
+source_of_truth: "SharedSkills"
+skills:
+  - name: "perplexity_search_only"
+    path: "perplexity_search_only"
+    purpose: "Cheap Perplexity MCP web search only"
+    install_target: "~/.codex/skills/perplexity_search_only"
+  - name: "perplexity_deep_research"
+    path: "perplexity_deep_research"
+    purpose: "High-cost Perplexity MCP deep research only"
+    install_target: "~/.codex/skills/perplexity_deep_research"
