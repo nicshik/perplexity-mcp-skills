@@ -26,6 +26,13 @@ Official links:
 
 Create an API key in the [Perplexity console](https://console.perplexity.ai/). Do not put the key into repository files.
 
+Important API balance note:
+
+- A Perplexity Pro subscription no longer includes monthly API credits.
+- Sonar API uses a separate balance in the [Perplexity console](https://console.perplexity.ai/).
+- If the balance is empty, requests may fail with authorization or billing errors even when the API key is configured correctly.
+- You can add funds in the API settings. See: [API billing](https://www.perplexity.ai/help-center/en/articles/10354847-api-settings-billing).
+
 ### 2. Add the official Perplexity MCP server to Codex
 
 ```bash
