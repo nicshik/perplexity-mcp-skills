@@ -11,3 +11,7 @@ skills:
     path: "perplexity_deep_research"
     purpose: "High-cost Perplexity MCP deep research only"
     install_target: "~/.codex/skills/perplexity_deep_research"
+  - name: "perplexity-pro-search"
+    path: "perplexity-pro-search"
+    purpose: "Direct Perplexity Pro Search API workflow"
+    install_target: "~/.codex/skills/perplexity-pro-search"
