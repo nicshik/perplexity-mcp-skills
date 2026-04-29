@@ -1,8 +1,8 @@
 interface:
   display_name: "Perplexity Search"
-  short_description: "Cheap web search through Perplexity MCP"
+  short_description: "Недорогой поиск через Perplexity MCP"
   brand_color: "#111827"
-  default_prompt: "Use $perplexity_search_only to run low-cost Perplexity search and return ranked links with brief takeaways."
+  default_prompt: "Используй $perplexity_search_only, чтобы выполнить недорогой поиск Perplexity и вернуть ссылки с короткими пояснениями."
 
 dependencies:
   tools:

@@ -1,8 +1,8 @@
 interface:
   display_name: "Perplexity Pro Search"
-  short_description: "Direct Pro Search API workflow"
+  short_description: "Pro Search через Sonar Pro"
   brand_color: "#0F766E"
-  default_prompt: "Use $perplexity-pro-search to run one Perplexity Pro Search API query, prefer official sources, and return a concise cited answer with no extra verification unless the result conflicts with itself or lacks primary sources."
+  default_prompt: "Используй $perplexity-pro-search для одного запроса Perplexity Pro Search, отдавай приоритет официальным источникам и верни краткий ответ со ссылками."
 
 policy:
   allow_implicit_invocation: false

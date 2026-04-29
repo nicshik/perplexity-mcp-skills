@@ -1,7 +1,6 @@
 ---
 name: perplexity_deep_research
-description: Internal workflow for Perplexity MCP deep research only, reserved for broad high-stakes multi-source analysis where higher spend is acceptable.
-license: Factorix-Internal
+description: Глубокое исследование через Perplexity MCP для широких и важных вопросов по многим источникам, когда допустимы больший расход и более долгое выполнение.
 compatibility:
   runtimes:
     - codex
@@ -16,38 +15,38 @@ metadata:
   distribution_scope: internal
   invocation_strategy: explicit
   version: v0.1
-  source_of_truth: Skills/sources/internal/factorix/perplexity_deep_research
+  source_of_truth: https://github.com/nicshik/perplexity-mcp-skills
 ---
 
 # Perplexity Deep Research
 
-Use this skill when the task explicitly needs exhaustive multi-source research through the Perplexity MCP server and higher cost is acceptable.
+Используй этот навык, когда задаче явно нужно глубокое исследование по многим источникам через Perplexity MCP и больший расход допустим.
 
-This skill is explicit-only because `perplexity_research` can consume meaningfully more credits than search or reasoning modes.
+Навык вызывается явно, потому что `perplexity_research` может расходовать заметно больше кредитов, чем поиск и обычные ответы.
 
 ## Preconditions
 
-- The `perplexity` MCP server is installed and enabled in Codex.
-- `PERPLEXITY_API_KEY` is already configured in the MCP server environment.
+- MCP-сервер `perplexity` установлен и включен в Codex.
+- `PERPLEXITY_API_KEY` уже задан в окружении MCP-сервера.
 
 ## Non-Negotiable Rules
 
-- Use `perplexity_research` only.
-- Do not silently downgrade to `perplexity_search`, `perplexity_ask`, or `perplexity_reason`.
-- Keep the scope sharp even in deep research mode.
-- Prefer practical synthesis over hype.
+- Используй только `perplexity_research`.
+- Не заменяй его незаметно на `perplexity_search`, `perplexity_ask` или `perplexity_reason`.
+- Даже в глубоком режиме держи границы вопроса узкими.
+- Отдавай приоритет практическому выводу, а не общим формулировкам.
 
 ## Default Flow
 
-1. Confirm the research question is broad enough to justify deep research.
-2. Narrow the scope to the exact landscape, market, workflow, or competitor set.
-3. Run `perplexity_research`.
-4. Return a concise synthesis with the strongest citations.
-5. If the user only needed links, recommend switching to `$perplexity_search_only` next time.
+1. Убедись, что вопрос достаточно широкий и важный для глубокого исследования.
+2. Сузь область: рынок, набор конкурентов, период, документы или конкретный предмет сравнения.
+3. Запусти `perplexity_research`.
+4. Верни короткий вывод с самыми сильными ссылками.
+5. Если пользователю были нужны только ссылки, предложи в следующий раз `$perplexity_search_only`.
 
 ## Recommended Prompt Shape
 
-- `Use $perplexity_deep_research to run a Perplexity deep research pass on "<question>". Focus on practical patterns, not hype, and keep it concise.`
+- `Используй $perplexity_deep_research для глубокого исследования "<question>". Сфокусируйся на практических выводах и пиши кратко.`
 
 ## References
 

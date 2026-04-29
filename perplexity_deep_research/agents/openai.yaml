@@ -1,8 +1,8 @@
 interface:
   display_name: "Perplexity Deep Research"
-  short_description: "Deep multi-source research through Perplexity"
+  short_description: "Глубокое исследование через Perplexity"
   brand_color: "#1D4ED8"
-  default_prompt: "Use $perplexity_deep_research to run Perplexity deep research on a high-stakes question and return a concise cited synthesis."
+  default_prompt: "Используй $perplexity_deep_research для глубокого исследования важного вопроса и верни краткий вывод со ссылками."
 
 dependencies:
   tools:

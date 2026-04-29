@@ -1,7 +1,6 @@
 ---
 name: perplexity-pro-search
-description: Direct workflow for Perplexity Pro Search API using a bundled script that calls Sonar Pro with streaming and `web_search_options.search_type=pro`. Use when the user explicitly wants Pro Search behavior or billing, not raw Search API or the cheaper Perplexity MCP search path.
-license: Factorix-Internal
+description: Perplexity Pro Search через скрипт, который вызывает Sonar Pro с потоковым ответом и `web_search_options.search_type=pro`. Использовать, когда нужен именно Pro Search, а не простой Search API или дешевый поиск через Perplexity MCP.
 compatibility:
   runtimes:
     - codex
@@ -16,52 +15,52 @@ metadata:
   distribution_scope: internal
   invocation_strategy: explicit
   version: v0.2
-  source_of_truth: Skills/sources/internal/factorix/perplexity_pro_search
+  source_of_truth: https://github.com/nicshik/perplexity-mcp-skills
 ---
 
 # Perplexity Pro Search
 
-Use this skill when the user explicitly wants Perplexity `Pro Search API`, or when the task needs Sonar Pro's multi-step web workflow rather than raw ranked links.
+Используй этот навык, когда пользователю явно нужен Perplexity `Pro Search API` или когда задаче нужен ответ Sonar Pro по текущим источникам, а не просто список ссылок.
 
-This skill is explicit-only because Pro Search is materially more expensive than `Search API` and standard Sonar Pro fast search.
+Навык вызывается явно, потому что Pro Search дороже простого `Search API` и быстрых ответов.
 
 ## Preconditions
 
-- `PERPLEXITY_API_KEY` is available either in the shell environment or in `CODEX_HOME/config.toml` / `~/.codex/config.toml` under `mcp_servers.perplexity.env`.
-- Network access to `https://api.perplexity.ai` is allowed.
-- If the sandbox blocks outbound network calls, rerun the script with escalated permissions rather than silently downgrading.
+- `PERPLEXITY_API_KEY` доступен в окружении shell или в `CODEX_HOME/config.toml` / `~/.codex/config.toml` в разделе `mcp_servers.perplexity.env`.
+- Разрешен доступ к `https://api.perplexity.ai`.
+- Если песочница блокирует сеть, повтори тот же скрипт с повышенным доступом. Не заменяй режим другим поиском.
 
 ## Non-Negotiable Rules
 
-- Use the bundled `scripts/pro_search.py`.
-- Keep `stream=true` and `web_search_options.search_type="pro"`.
-- Do not silently downgrade to `perplexity_search`, `perplexity_ask`, `perplexity_reason`, or non-streaming Sonar Pro.
-- Prefer `--json` when Codex needs to post-process the result.
-- Keep scope sharp. Pro Search is for complex, comparative, or time-sensitive web questions, not trivial lookups.
+- Используй `scripts/pro_search.py`.
+- Сохраняй `stream=true` и `web_search_options.search_type="pro"`.
+- Не переходи незаметно на `perplexity_search`, `perplexity_ask`, `perplexity_reason` или обычный Sonar Pro без потока.
+- Используй `--json`, когда Codex должен обработать результат дальше.
+- Держи вопрос узким. Pro Search нужен для сравнений, сложных или зависящих от времени вопросов, а не для простых поисков.
 
 ## Lean Execution Rules
 
-- Default to exactly one Pro Search API call.
-- Do not inspect `scripts/pro_search.py` during routine use. Read it only if the skill is failing, being patched, or the user explicitly asks how it works.
-- Do not add extra web, GitHub, or API verification after a successful Pro Search unless one of these is true:
-  - the user explicitly asks for independent verification
-  - the returned sources are not primary or official enough for the question
-  - the answer appears internally inconsistent or conflicts with an official source
-- If sandbox networking fails, rerun the same command once with escalation. Do not branch into alternative search tools.
-- Keep commentary minimal. One short note before running and one short note if escalation is required is enough.
+- Обычно делай один вызов Pro Search API.
+- Не читай `scripts/pro_search.py` при обычном использовании. Открывай его только при ошибке, правке или явном вопросе пользователя.
+- Не добавляй лишнюю проверку через веб, GitHub или другой API после успешного Pro Search, кроме случаев:
+  - пользователь явно просит независимую проверку;
+  - источники недостаточно официальные;
+  - ответ противоречив или конфликтует с официальным источником.
+- Если сеть в песочнице недоступна, один раз повтори ту же команду с повышенным доступом.
+- Пиши коротко: одна заметка перед запуском и одна заметка при необходимости повышенного доступа.
 
 ## Default Flow
 
-1. Rewrite the user's request into a precise web question.
-2. Choose filters only when they materially improve result quality:
-   - `--context-size medium|high` for broader synthesis
-   - `--recency` for current events
-   - `--domain` to constrain sources
-3. Run `scripts/pro_search.py` once, usually with `--json`.
-4. Return a concise answer plus the strongest sources.
-5. Include usage summary only when it is materially useful or the user asks.
-6. If, and only if, the answer looks inconsistent or insufficiently official, do one targeted confirmation against the single strongest official source.
-7. If the user only needs raw ranked links, recommend `$perplexity_search_only` instead.
+1. Преврати запрос пользователя в точный вопрос.
+2. Добавляй фильтры только когда они реально улучшают результат:
+   - `--context-size medium|high` для более широкого разбора;
+   - `--recency` для свежих событий;
+   - `--domain` для ограничения источников.
+3. Один раз запусти `scripts/pro_search.py`, обычно с `--json`.
+4. Верни короткий ответ и лучшие источники.
+5. Показывай расход только когда это полезно или пользователь просит.
+6. Если ответ выглядит противоречивым или недостаточно официальным, сделай одну точечную проверку по лучшему официальному источнику.
+7. Если пользователю нужны только ссылки, предложи `$perplexity_search_only`.
 
 ## Recommended Commands
 
@@ -73,9 +72,9 @@ python3 scripts/pro_search.py "Which open-source MCP servers added Perplexity su
 
 ## Output Shape
 
-- Default script output is human-readable: answer, sources, usage.
-- `--json` returns structured data with `content`, `search_results`, `usage`, and optional reasoning traces so Codex can reformat it cleanly.
-- If the API call fails, surface the error directly. Do not guess.
+- Обычный вывод: ответ, источники, расход.
+- `--json` возвращает `content`, `search_results`, `usage` и шаги рассуждения, если они есть.
+- Если вызов API не удался, покажи ошибку напрямую. Не додумывай результат.
 
 ## References
 

@@ -19,8 +19,6 @@ import urllib.error
 import urllib.request
 from typing import Any
 
-import certifi
-
 try:
     import tomllib
 except ModuleNotFoundError:  # pragma: no cover
@@ -153,7 +151,7 @@ def resolve_api_key() -> str:
 
 
 def build_ssl_context() -> ssl.SSLContext:
-    return ssl.create_default_context(cafile=certifi.where())
+    return ssl.create_default_context()
 
 
 def stream_request(payload: dict[str, Any]) -> dict[str, Any]:

@@ -1,7 +1,6 @@
 ---
 name: perplexity_search_only
-description: Internal workflow for low-cost Perplexity MCP web search only, without escalation into ask, reason, or deep research.
-license: Factorix-Internal
+description: Недорогой поиск через Perplexity MCP без перехода в ask, reason или deep research. Использовать, когда нужны ссылки, сниппеты, поиск источников или быстрая проверка свежих сведений.
 compatibility:
   runtimes:
     - codex
@@ -15,37 +14,37 @@ metadata:
   distribution_scope: internal
   invocation_strategy: explicit
   version: v0.1
-  source_of_truth: Skills/sources/internal/factorix/perplexity_search_only
+  source_of_truth: https://github.com/nicshik/perplexity-mcp-skills
 ---
 
 # Perplexity Search Only
 
-Use this skill when the user needs fresh web discovery through the Perplexity MCP server but does not want reasoning-heavy or research-heavy modes.
+Используй этот навык, когда пользователю нужен свежий поиск через Perplexity MCP, но не нужны режимы с ответом модели, рассуждением или глубоким исследованием.
 
-This skill is explicit-only because it should act as a deliberate low-cost path.
+Навык вызывается явно, чтобы оставаться осознанным дешевым путем.
 
 ## Preconditions
 
-- The `perplexity` MCP server is installed and enabled in Codex.
-- `PERPLEXITY_API_KEY` is already configured in the MCP server environment.
+- MCP-сервер `perplexity` установлен и включен в Codex.
+- `PERPLEXITY_API_KEY` уже задан в окружении MCP-сервера.
 
 ## Non-Negotiable Rules
 
-- Use `perplexity_search` only.
-- Do not escalate to `perplexity_ask`, `perplexity_reason`, or `perplexity_research`.
-- Return ranked links, dates when available, and concise takeaways.
-- Keep results bounded, usually `3-5` strongest hits unless the user asks for more.
+- Используй только `perplexity_search`.
+- Не переходи в `perplexity_ask`, `perplexity_reason` или `perplexity_research`.
+- Возвращай ссылки, даты при наличии и короткие пояснения.
+- Обычно ограничивайся `3-5` лучшими результатами, если пользователь не просит больше.
 
 ## Default Flow
 
-1. Rewrite the user question into a sharp search query if needed.
-2. Run `perplexity_search`.
-3. Return the most relevant results with one-line takeaways.
-4. If the user later wants broader synthesis or recommendation, tell them to switch to a deeper Perplexity workflow such as `$perplexity_deep_research`.
+1. При необходимости преврати запрос пользователя в точную поисковую фразу.
+2. Запусти `perplexity_search`.
+3. Верни самые подходящие результаты с короткими пояснениями.
+4. Если пользователю нужен широкий вывод или рекомендация, предложи в следующий раз использовать более глубокий режим, например `$perplexity_deep_research`.
 
 ## Recommended Prompt Shape
 
-- `Use $perplexity_search_only to run a Perplexity search for "<query>" and return the top 5 results with one-line takeaways.`
+- `Используй $perplexity_search_only, чтобы найти "<query>" и вернуть 5 лучших результатов с короткими пояснениями.`
 
 ## References
 
