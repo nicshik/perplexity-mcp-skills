@@ -25,7 +25,7 @@ metadata:
 
 ## Preconditions
 
-- MCP-сервер `perplexity` установлен и включен в Codex.
+- MCP-сервер `perplexity` установлен и включен в Codex или Windsurf.
 - `PERPLEXITY_API_KEY` уже задан в окружении MCP-сервера.
 
 ## Non-Negotiable Rules

@@ -135,6 +135,29 @@ def load_api_key_from_codex_config() -> str | None:
     )
 
 
+def load_api_key_from_windsurf_config() -> str | None:
+    config_path = Path("~/.codeium/windsurf/mcp_config.json").expanduser()
+    if not config_path.exists():
+        return None
+
+    try:
+        with config_path.open("r", encoding="utf-8") as handle:
+            config = json.load(handle)
+    except (OSError, json.JSONDecodeError):
+        return None
+
+    servers = config.get("mcpServers", {})
+    for server_name in ("perplexity", "perplexity-mcp"):
+        api_key = (
+            servers.get(server_name, {})
+            .get("env", {})
+            .get("PERPLEXITY_API_KEY")
+        )
+        if api_key:
+            return api_key
+    return None
+
+
 def resolve_api_key() -> str:
     api_key = os.environ.get("PERPLEXITY_API_KEY")
     if api_key:
@@ -144,9 +167,13 @@ def resolve_api_key() -> str:
     if api_key:
         return api_key
 
+    api_key = load_api_key_from_windsurf_config()
+    if api_key:
+        return api_key
+
     raise SystemExit(
-        "PERPLEXITY_API_KEY was not found in the shell environment or ~/.codex/config.toml "
-        "(CODEX_HOME/config.toml)."
+        "PERPLEXITY_API_KEY was not found in the shell environment, ~/.codex/config.toml "
+        "(CODEX_HOME/config.toml), or ~/.codeium/windsurf/mcp_config.json."
     )
 
 

@@ -56,13 +56,39 @@ Important API balance note:
 - If the balance is empty, requests may fail with authorization or billing errors even when the API key is configured correctly.
 - You can add funds in the API settings. See: [API billing](https://www.perplexity.ai/help-center/en/articles/10354847-api-settings-billing).
 
-### 2. Add the official Perplexity MCP server to Codex
+### 2. Add the official Perplexity MCP server
+
+#### Option A: Codex
 
 ```bash
 codex mcp add perplexity --env PERPLEXITY_API_KEY="your_key" -- npx -y @perplexity-ai/mcp-server
 ```
 
-This command is required for `$perplexity_search_only` and `$perplexity_deep_research`. The direct scripts for Pro Search and URL reading can also read the key from the same Codex settings file.
+#### Option B: Windsurf
+
+```bash
+PERPLEXITY_API_KEY="your_key" ./scripts/install_to_windsurf.sh
+```
+
+The script adds the Perplexity MCP server to `~/.codeium/windsurf/mcp_config.json`. Restart Windsurf after that.
+
+You can also add the setting manually:
+
+```json
+{
+  "mcpServers": {
+    "perplexity": {
+      "command": "npx",
+      "args": ["-y", "@perplexity-ai/mcp-server"],
+      "env": {
+        "PERPLEXITY_API_KEY": "your_key"
+      }
+    }
+  }
+}
+```
+
+The MCP server is required for `$perplexity_search_only` and `$perplexity_deep_research`. The direct scripts for Pro Search and URL reading can read the key from the shell environment, Codex settings, or `~/.codeium/windsurf/mcp_config.json`.
 
 If you do not want to add the MCP server, you can set the key through an environment variable before running the direct scripts:
 
@@ -70,17 +96,28 @@ If you do not want to add the MCP server, you can set the key through an environ
 export PERPLEXITY_API_KEY="your_key"
 ```
 
-### 3. Download the repository and install the skills
+### 3. Download the repository
 
 ```bash
 git clone https://github.com/nicshik/perplexity-mcp-skills.git
 cd perplexity-mcp-skills
+```
+
+### 4. Install the skills for Codex
+
+```bash
 ./scripts/install_to_codex.sh
 ```
 
 The installer copies the skills to `${CODEX_HOME:-$HOME/.codex}/skills`.
 
-### 4. Restart Codex
+### 5. Use the Windsurf rules
+
+For Windsurf, the repository includes `.windsurf/rules/perplexity-mcp-skills.md`. It tells Cascade which Perplexity mode to use and when not to switch into expensive calls.
+
+If you work from this repository in Windsurf, the rule is already in the workspace. If you want to use it in another project, copy the file to `.windsurf/rules/` in that project.
+
+### 6. Restart Codex or Windsurf
 
 After restart, call the skills explicitly:
 

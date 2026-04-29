@@ -56,13 +56,39 @@
 - Если баланс не пополнен, запросы могут завершаться ошибками авторизации или оплаты, даже если API-ключ создан правильно.
 - Пополнить баланс можно в настройках API. Подробнее: [оплата и выставление счетов за API](https://www.perplexity.ai/help-center/ru/articles/10354847-%D0%BE%D0%BF%D0%BB%D0%B0%D1%82%D0%B0-%D0%B8-%D0%B2%D1%8B%D1%81%D1%82%D0%B0%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5-%D1%81%D1%87%D0%B5%D1%82%D0%BE%D0%B2-%D0%B7%D0%B0-api).
 
-### 2. Подключите официальный MCP-сервер Perplexity в Codex
+### 2. Подключите официальный MCP-сервер Perplexity
+
+#### Вариант A: Codex
 
 ```bash
 codex mcp add perplexity --env PERPLEXITY_API_KEY="ваш_ключ" -- npx -y @perplexity-ai/mcp-server
 ```
 
-Эта команда нужна для навыков `$perplexity_search_only` и `$perplexity_deep_research`. Прямые скрипты для Pro Search и чтения URL тоже умеют брать ключ из этого же файла настроек Codex.
+#### Вариант B: Windsurf
+
+```bash
+PERPLEXITY_API_KEY="ваш_ключ" ./scripts/install_to_windsurf.sh
+```
+
+Скрипт добавляет MCP-сервер Perplexity в `~/.codeium/windsurf/mcp_config.json`. После этого перезапустите Windsurf.
+
+Можно также добавить настройку вручную:
+
+```json
+{
+  "mcpServers": {
+    "perplexity": {
+      "command": "npx",
+      "args": ["-y", "@perplexity-ai/mcp-server"],
+      "env": {
+        "PERPLEXITY_API_KEY": "ваш_ключ"
+      }
+    }
+  }
+}
+```
+
+MCP-сервер нужен для навыков `$perplexity_search_only` и `$perplexity_deep_research`. Прямые скрипты для Pro Search и чтения URL умеют брать ключ из переменной окружения, настроек Codex или `~/.codeium/windsurf/mcp_config.json`.
 
 Если вы не хотите добавлять MCP-сервер, можно перед запуском прямых скриптов задать ключ через переменную окружения:
 
@@ -70,17 +96,28 @@ codex mcp add perplexity --env PERPLEXITY_API_KEY="ваш_ключ" -- npx -y @p
 export PERPLEXITY_API_KEY="ваш_ключ"
 ```
 
-### 3. Скачайте репозиторий и установите навыки
+### 3. Скачайте репозиторий
 
 ```bash
 git clone https://github.com/nicshik/perplexity-mcp-skills.git
 cd perplexity-mcp-skills
+```
+
+### 4. Установите навыки для Codex
+
+```bash
 ./scripts/install_to_codex.sh
 ```
 
 Установщик копирует навыки в `${CODEX_HOME:-$HOME/.codex}/skills`.
 
-### 4. Перезапустите Codex
+### 5. Используйте правила для Windsurf
+
+Для Windsurf в репозитории есть файл `.windsurf/rules/perplexity-mcp-skills.md`. Он подсказывает Cascade, какие режимы Perplexity использовать и когда не переходить в дорогие вызовы.
+
+Если вы работаете прямо из этого репозитория в Windsurf, правило уже лежит в рабочей папке. Если хотите использовать его в другом проекте, скопируйте файл в `.windsurf/rules/` нужного проекта.
+
+### 6. Перезапустите Codex или Windsurf
 
 После перезапуска навыки можно вызывать явно:
 

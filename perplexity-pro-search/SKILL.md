@@ -26,7 +26,7 @@ metadata:
 
 ## Preconditions
 
-- `PERPLEXITY_API_KEY` доступен в окружении shell или в `CODEX_HOME/config.toml` / `~/.codex/config.toml` в разделе `mcp_servers.perplexity.env`.
+- `PERPLEXITY_API_KEY` доступен в окружении shell, в `CODEX_HOME/config.toml` / `~/.codex/config.toml` или в `~/.codeium/windsurf/mcp_config.json`.
 - Разрешен доступ к `https://api.perplexity.ai`.
 - Если песочница блокирует сеть, повтори тот же скрипт с повышенным доступом. Не заменяй режим другим поиском.
 
