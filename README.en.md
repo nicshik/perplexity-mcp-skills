@@ -6,6 +6,29 @@ A set of Codex skills for Perplexity: low-cost search, deep research, Pro Search
 
 The skills are intentionally separated. This makes it easier to control cost and request depth: a quick search should not accidentally become an expensive research task, and reading a specific URL should not be mixed with general search.
 
+<details>
+<summary>Why not use one shared Perplexity MCP access without separation</summary>
+
+The official Perplexity MCP server supports several different tools:
+
+- `perplexity_search` — link and snippet search;
+- `perplexity_ask` — Sonar-based question answering;
+- `perplexity_research` — deep research;
+- `perplexity_reason` — reasoning for complex tasks.
+
+If an agent gets one shared access to all tools, it can decide which tool to use for each request. This automatic choice is convenient, but it makes spending less predictable: a simple request may be handled by a heavier tool than you expected.
+
+This repository separates the skills so the mode is explicit:
+
+- need low-cost search — use `$perplexity_search_only`;
+- need a detailed review — use `$perplexity_deep_research`;
+- need a Pro Search answer — use `$perplexity-pro-search`;
+- need to read a specific URL — use `$perplexity-fetch-url-content`.
+
+This makes it easier to understand in advance what type of request will run and why it may cost more or less.
+
+</details>
+
 Official links:
 
 - [Perplexity documentation](https://docs.perplexity.ai/docs/getting-started/overview)
