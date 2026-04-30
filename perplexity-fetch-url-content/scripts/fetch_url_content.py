@@ -10,18 +10,18 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
-import ssl
+import sys
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse, urlunparse
-import urllib.error
-import urllib.request
 
-try:
-    import tomllib
-except ModuleNotFoundError:  # pragma: no cover
-    tomllib = None
+CURRENT_DIR = Path(__file__).resolve().parent
+for helper_dir in (CURRENT_DIR, CURRENT_DIR.parent, CURRENT_DIR.parent.parent):
+    if (helper_dir / "perplexity_common.py").exists():
+        sys.path.insert(0, str(helper_dir))
+        break
+
+from perplexity_common import build_json_request, open_request
 
 
 API_URL = "https://api.perplexity.ai/v1/sonar"
@@ -153,87 +153,8 @@ def build_payload(args: argparse.Namespace, urls: list[str]) -> dict[str, Any]:
     }
 
 
-def load_api_key_from_codex_config() -> str | None:
-    if tomllib is None:
-        return None
-
-    codex_home = Path(os.environ.get("CODEX_HOME", "~/.codex")).expanduser()
-    config_path = codex_home / "config.toml"
-    if not config_path.exists():
-        return None
-
-    try:
-        with config_path.open("rb") as handle:
-            config = tomllib.load(handle)
-    except (OSError, tomllib.TOMLDecodeError):
-        return None
-
-    return (
-        config.get("mcp_servers", {})
-        .get("perplexity", {})
-        .get("env", {})
-        .get("PERPLEXITY_API_KEY")
-    )
-
-
-def load_api_key_from_windsurf_config() -> str | None:
-    config_path = Path("~/.codeium/windsurf/mcp_config.json").expanduser()
-    if not config_path.exists():
-        return None
-
-    try:
-        with config_path.open("r", encoding="utf-8") as handle:
-            config = json.load(handle)
-    except (OSError, json.JSONDecodeError):
-        return None
-
-    servers = config.get("mcpServers", {})
-    for server_name in ("perplexity", "perplexity-mcp"):
-        api_key = (
-            servers.get(server_name, {})
-            .get("env", {})
-            .get("PERPLEXITY_API_KEY")
-        )
-        if api_key:
-            return api_key
-    return None
-
-
-def resolve_api_key() -> str:
-    api_key = os.environ.get("PERPLEXITY_API_KEY")
-    if api_key:
-        return api_key
-
-    api_key = load_api_key_from_codex_config()
-    if api_key:
-        return api_key
-
-    api_key = load_api_key_from_windsurf_config()
-    if api_key:
-        return api_key
-
-    raise SystemExit(
-        "PERPLEXITY_API_KEY was not found in the shell environment, ~/.codex/config.toml "
-        "(CODEX_HOME/config.toml), or ~/.codeium/windsurf/mcp_config.json."
-    )
-
-
-def build_ssl_context() -> ssl.SSLContext:
-    return ssl.create_default_context()
-
-
 def stream_request(payload: dict[str, Any]) -> dict[str, Any]:
-    body = json.dumps(payload).encode("utf-8")
-    request = urllib.request.Request(
-        API_URL,
-        data=body,
-        method="POST",
-        headers={
-            "Authorization": f"Bearer {resolve_api_key()}",
-            "Content-Type": "application/json",
-            "Accept": "text/event-stream",
-        },
-    )
+    request = build_json_request(API_URL, payload, accept="text/event-stream")
 
     result: dict[str, Any] = {
         "content": "",
@@ -243,46 +164,40 @@ def stream_request(payload: dict[str, Any]) -> dict[str, Any]:
         "raw_objects_seen": [],
     }
 
-    try:
-        with urllib.request.urlopen(request, context=build_ssl_context()) as response:
-            for raw_line in response:
-                line = raw_line.decode("utf-8").strip()
-                if not line or not line.startswith("data:"):
-                    continue
-                data = line[5:].strip()
-                if data == "[DONE]":
-                    break
+    with open_request(request) as response:
+        for raw_line in response:
+            line = raw_line.decode("utf-8").strip()
+            if not line or not line.startswith("data:"):
+                continue
+            data = line[5:].strip()
+            if data == "[DONE]":
+                break
 
-                chunk = json.loads(data)
-                obj = chunk.get("object")
-                if obj:
-                    result["raw_objects_seen"].append(obj)
+            chunk = json.loads(data)
+            obj = chunk.get("object")
+            if obj:
+                result["raw_objects_seen"].append(obj)
 
-                if obj == "chat.reasoning":
-                    append_reasoning_steps(result, chunk)
-                elif obj == "chat.reasoning.done":
-                    append_reasoning_steps_from_message(result, chunk)
-                    if chunk.get("search_results"):
-                        result["search_results"] = chunk["search_results"]
-                    if chunk.get("usage"):
-                        result["usage"] = chunk["usage"]
-                elif obj == "chat.completion.chunk":
-                    for choice in chunk.get("choices", []):
-                        delta = choice.get("delta", {})
-                        content = delta.get("content")
-                        if content:
-                            result["content"] += content
-                elif obj == "chat.completion.done":
-                    append_reasoning_steps_from_message(result, chunk)
-                    if chunk.get("search_results"):
-                        result["search_results"] = chunk["search_results"]
-                    if chunk.get("usage"):
-                        result["usage"] = chunk["usage"]
-    except urllib.error.HTTPError as exc:
-        detail = exc.read().decode("utf-8", errors="replace")
-        raise SystemExit(f"Perplexity API HTTP {exc.code}: {detail}") from exc
-    except urllib.error.URLError as exc:
-        raise SystemExit(f"Perplexity API connection error: {exc}") from exc
+            if obj == "chat.reasoning":
+                append_reasoning_steps(result, chunk)
+            elif obj == "chat.reasoning.done":
+                append_reasoning_steps_from_message(result, chunk)
+                if chunk.get("search_results"):
+                    result["search_results"] = chunk["search_results"]
+                if chunk.get("usage"):
+                    result["usage"] = chunk["usage"]
+            elif obj == "chat.completion.chunk":
+                for choice in chunk.get("choices", []):
+                    delta = choice.get("delta", {})
+                    content = delta.get("content")
+                    if content:
+                        result["content"] += content
+            elif obj == "chat.completion.done":
+                append_reasoning_steps_from_message(result, chunk)
+                if chunk.get("search_results"):
+                    result["search_results"] = chunk["search_results"]
+                if chunk.get("usage"):
+                    result["usage"] = chunk["usage"]
 
     return result
 

@@ -38,7 +38,7 @@ Official links:
 
 | Skill | When to use | What it calls | What it returns |
 | --- | --- | --- | --- |
-| `$perplexity_search_only` | You need links, sources, and snippets | MCP `perplexity_search` | A list of found pages without a model-generated answer |
+| `$perplexity_search_only` | You need links, sources, and snippets | MCP `perplexity_search`, or a direct Search API script if MCP is unavailable | A list of found pages without a model-generated answer |
 | `$perplexity-pro-search` | You need a short answer with sources, but not deep research | Sonar Pro API with `search_type=pro` | Answer, sources, usage, and step log |
 | `$perplexity_deep_research` | You need a broad review based on many sources | MCP `perplexity_research` | A detailed report with links |
 | `$perplexity-fetch-url-content` | You need to read known URLs | Sonar Pro API and built-in `fetch_url_content` | Extracted page content and a check of which URLs were read |
@@ -56,16 +56,19 @@ Important API balance note:
 - If the balance is empty, requests may fail with authorization or billing errors even when the API key is configured correctly.
 - You can add funds in the API settings. See: [API billing](https://www.perplexity.ai/help-center/en/articles/10354847-api-settings-billing).
 
-Observed billing example for `/perplexity-research`: the query “best practices for organizing GitHub” through `sonar-deep-research` cost `$1.38`.
+Observed cost examples for individual modes:
 
-| Component | Usage | Rate | Cost |
-| --- | ---: | ---: | ---: |
-| Input tokens | 97 | `$0.000002` | `$0.00` |
-| Output tokens | 8,411 | `$0.000008` | `$0.07` |
-| Citation tokens | 42,528 | `$0.000002` | `$0.09` |
-| Reasoning tokens | 297,086 | `$0.000003` | `$0.89` |
-| Search queries | 67 | `$0.005` | `$0.34` |
-| **Total** |  |  | **`$1.38`** |
+- `/perplexity-research`: one deep research run for the query “best practices for organizing GitHub” cost **`$1.38`**:
+  - input tokens: `97` -> `$0.00`
+  - output tokens: `8,411` -> `$0.07`
+  - citation tokens: `42,528` -> `$0.09`
+  - reasoning tokens: `297,086` -> `$0.89`
+  - search queries: `67` -> `$0.34`
+- `/perplexity-pro`: one recent Pro Search run for the same query cost **`$0.01819`**:
+  - request cost: `$0.01`
+  - input tokens: `21` -> `$0.00006`
+  - output tokens: `542` -> `$0.00813`
+- `/perplexity-search`: a recent example for the same query used `4` Search API requests at `$0.005` each and cost **`$0.02`**.
 
 ### 2. Add the official Perplexity MCP server
 
@@ -99,13 +102,23 @@ You can also add the setting manually:
 }
 ```
 
-The MCP server is required for `$perplexity_search_only` and `$perplexity_deep_research`. The direct scripts for Pro Search and URL reading can read the key from the shell environment, Codex settings, or `~/.codeium/windsurf/mcp_config.json`.
+The MCP server is required for `$perplexity_deep_research` and remains the preferred path for `$perplexity_search_only`. If the MCP search tool is not exposed in a given agent session, `$perplexity_search_only` can use a direct Search API script instead. The direct scripts for search, Pro Search, and URL reading can read the key from the shell environment, Codex settings, or `~/.codeium/windsurf/mcp_config.json`.
 
 If you do not want to add the MCP server, you can set the key through an environment variable before running the direct scripts:
 
 ```bash
 export PERPLEXITY_API_KEY="your_key"
 ```
+
+Before running the direct Python scripts, install the repository dependencies:
+
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+This avoids local CA certificate store issues on some Python installations.
+
+Important: an MCP server being enabled in the UI does not always guarantee that its tool is exposed inside a specific agent session. The repository includes a direct Search API fallback for cheap search specifically for that case.
 
 ### 3. Download the repository
 
@@ -188,6 +201,8 @@ In Windsurf, you do not need to write long prompts with internal MCP method name
 
 The lowest-cost mode. Use it when you need links and short search-result details, not a ready-made model answer.
 
+It prefers MCP `perplexity_search`, but if that MCP tool is not exposed in the current runtime it can use `perplexity_search_only/scripts/search_only.py` as a direct fallback with the same cheap-search contract.
+
 Use it for:
 
 - finding official documentation;
@@ -197,7 +212,7 @@ Use it for:
 
 Limits:
 
-- uses only `perplexity_search`;
+- uses MCP `perplexity_search` or a direct Search API fallback without answer synthesis;
 - should not switch to `perplexity_ask`, `perplexity_reason`, or `perplexity_research`;
 - does not read full page text;
 - does not do deep analysis.
@@ -208,9 +223,18 @@ Example:
 Use $perplexity_search_only to find the official Perplexity MCP server documentation and return the 5 best links with short notes.
 ```
 
+You can also run the direct fallback manually:
+
+```bash
+python3 ~/.codeium/windsurf/skills/perplexity-search/search_only.py "Perplexity MCP server documentation" --json
+python3 perplexity_search_only/scripts/search_only.py "Perplexity MCP server documentation" --json
+```
+
 ### `$perplexity-pro-search`
 
 A middle mode between link search and deep research. Use it when you need a ready answer with sources, but deep research would be too costly or slow.
+
+Recent single-run cost example: the query “best practices for organizing GitHub” through Pro Search cost **`$0.01819`** (`$0.01` request cost, `21` input tokens, `542` output tokens).
 
 What it does:
 
@@ -237,6 +261,7 @@ Use it for:
 Example:
 
 ```bash
+python3 ~/.codeium/windsurf/skills/perplexity-pro/pro_search.py "Compare current Perplexity MCP server setup options for Codex and Cursor." --context-size medium --json
 python3 perplexity-pro-search/scripts/pro_search.py "Compare current Perplexity MCP server setup options for Codex and Cursor." --context-size medium --json
 ```
 
@@ -290,6 +315,7 @@ Use it for:
 Examples:
 
 ```bash
+python3 ~/.codeium/windsurf/skills/perplexity-fetch-url/fetch_url_content.py https://docs.perplexity.ai/docs/sonar/pro-search/tools --json
 python3 perplexity-fetch-url-content/scripts/fetch_url_content.py https://docs.perplexity.ai/docs/sonar/pro-search/tools --json
 python3 perplexity-fetch-url-content/scripts/fetch_url_content.py https://example.com/report.pdf --question "Extract the methodology and key findings." --mode qa --json
 python3 perplexity-fetch-url-content/scripts/fetch_url_content.py https://example.com/a https://example.com/b --mode summary --require-fetch
@@ -300,19 +326,29 @@ python3 perplexity-fetch-url-content/scripts/fetch_url_content.py https://exampl
 Check help for the direct scripts:
 
 ```bash
+python3 ~/.codeium/windsurf/skills/perplexity-pro/pro_search.py --help
+python3 ~/.codeium/windsurf/skills/perplexity-fetch-url/fetch_url_content.py --help
 python3 perplexity-pro-search/scripts/pro_search.py --help
 python3 perplexity-fetch-url-content/scripts/fetch_url_content.py --help
+```
+
+If you run the direct Python scripts outside MCP, install dependencies first:
+
+```bash
+python3 -m pip install -r requirements.txt
 ```
 
 Check a request without calling the API:
 
 ```bash
+python3 ~/.codeium/windsurf/skills/perplexity-fetch-url/fetch_url_content.py --dry-run --json https://docs.perplexity.ai/docs/sonar/pro-search/tools
 python3 perplexity-fetch-url-content/scripts/fetch_url_content.py --dry-run --json https://docs.perplexity.ai/docs/sonar/pro-search/tools
 ```
 
 Check Python syntax:
 
 ```bash
+python3 -m py_compile ~/.codeium/windsurf/skills/perplexity-pro/pro_search.py ~/.codeium/windsurf/skills/perplexity-fetch-url/fetch_url_content.py
 python3 -m py_compile perplexity-pro-search/scripts/pro_search.py perplexity-fetch-url-content/scripts/fetch_url_content.py
 ```
 
@@ -325,6 +361,7 @@ perplexity_search_only/
 perplexity_deep_research/
 perplexity-pro-search/
 perplexity-fetch-url-content/
+perplexity_common.py
 scripts/install_to_codex.sh
 skills_manifest.yaml
 ```
@@ -332,6 +369,7 @@ skills_manifest.yaml
 ## Notes
 
 - The repository does not store API keys.
-- Search and deep research skills require the Perplexity MCP server.
-- Pro Search and URL reading skills use direct Sonar API calls, but read the key from the same Codex setting or from `PERPLEXITY_API_KEY`.
+- Deep research requires the Perplexity MCP server.
+- Cheap search prefers MCP but includes a direct Search API fallback.
+- Pro Search and URL reading skills use direct Sonar API calls, and the global Windsurf install copies their local scripts and `requirements.txt` directly into the skill directories.
 - If you need the full and exact text of a page, use a separate page parser. `fetch_url_content` is better suited for extracting useful content through Perplexity.

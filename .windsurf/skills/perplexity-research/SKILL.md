@@ -7,7 +7,7 @@ description: Deep Perplexity research mode. Use only for broad, important questi
 
 Use this skill for deep research through Perplexity.
 
-Observed billing example: the query “best practices for organizing GitHub” through `sonar-deep-research` cost `$1.38`, mainly from reasoning tokens and search queries.
+Observed billing snapshot after skill tests cost `$2.52`; most of it came from `sonar-deep-research`: 478,195 reasoning tokens (`$1.43`), 117 search queries (`$0.59`), 67,825 citation tokens (`$0.14`), and 15,158 output tokens (`$0.12`).
 
 Rules:
 

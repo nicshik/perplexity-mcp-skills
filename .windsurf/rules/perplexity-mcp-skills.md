@@ -4,11 +4,11 @@ Use these Perplexity modes explicitly. Do not route simple searches into expensi
 
 ## Modes
 
-- `@perplexity-search` or `/perplexity-search`: use only the Perplexity MCP `perplexity_search` tool. Return links, dates if available, and short notes.
+- `@perplexity-search` or `/perplexity-search`: prefer the Perplexity MCP `perplexity_search` tool. If it is not exposed in the current runtime, run `python3 ~/.codeium/windsurf/skills/perplexity-search/search_only.py "<query>" --json` for a global Windsurf install, or `python3 perplexity_search_only/scripts/search_only.py "<query>" --json` from the repository root. Return links, dates if available, and short notes.
 - `@perplexity-research` or `/perplexity-research`: use only the Perplexity MCP `perplexity_research` tool. Use it for broad research where higher cost and longer runtime are acceptable.
 - `@perplexity-pro` or `/perplexity-pro`: run `perplexity-pro-search/scripts/pro_search.py` for Sonar Pro Search with `search_type=pro`.
 - `@perplexity-fetch-url` or `/perplexity-fetch-url`: run `perplexity-fetch-url-content/scripts/fetch_url_content.py` when the user wants to read specific URLs.
-- `$perplexity_search_only`: use only the Perplexity MCP `perplexity_search` tool. Return links, dates if available, and short notes.
+- `$perplexity_search_only`: prefer the Perplexity MCP `perplexity_search` tool. If it is not exposed in the current runtime, run `python3 ~/.codeium/windsurf/skills/perplexity-search/search_only.py "<query>" --json` for a global Windsurf install, or `python3 perplexity_search_only/scripts/search_only.py "<query>" --json` from the repository root. Return links, dates if available, and short notes.
 - `$perplexity_deep_research`: use only the Perplexity MCP `perplexity_research` tool. Use it for broad research where higher cost and longer runtime are acceptable.
 - `$perplexity-pro-search`: run `perplexity-pro-search/scripts/pro_search.py` for Sonar Pro Search with `search_type=pro`.
 - `$perplexity-fetch-url-content`: run `perplexity-fetch-url-content/scripts/fetch_url_content.py` when the user wants to read specific URLs.

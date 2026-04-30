@@ -5,11 +5,11 @@ description: Read specific URLs through Perplexity Sonar Pro fetch_url_content. 
 
 # Perplexity Fetch URL
 
-Use this skill when the user wants Perplexity to read known URLs.
+Use this skill when the user wants Perplexity to read known URLs through a local script path that works both in a global Windsurf install and from the repository root.
 
 Rules:
 
-- Run `python3 perplexity-fetch-url-content/scripts/fetch_url_content.py <url> [url ...] --json` from the repository root.
+- Run `python3 ~/.codeium/windsurf/skills/perplexity-fetch-url/fetch_url_content.py <url> [url ...] --json` for a global Windsurf install, or `python3 perplexity-fetch-url-content/scripts/fetch_url_content.py <url> [url ...] --json` from the repository root.
 - Use `--mode summary` for short summaries, `--mode qa --question "..."` for a focused question, and default max-text when the user asks to extract as much useful content as possible.
 - Use `--require-fetch` when the user needs confirmation that every URL was actually fetched.
 - Report `fetched_urls`, `missing_requested_urls`, and `usage.cost.total_cost` when present.

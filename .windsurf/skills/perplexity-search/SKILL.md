@@ -5,11 +5,12 @@ description: Low-cost Perplexity search mode. Use when the user needs links, sou
 
 # Perplexity Search
 
-Use this skill for cheap Perplexity web search only.
+Use this skill for cheap Perplexity web search only. Prefer the MCP search tool, but fall back to the direct Search API script if the MCP tool is not exposed in the current runtime.
 
 Rules:
 
-- Use only the `perplexity_search` MCP tool from the `perplexity` server.
+- Use the `perplexity_search` MCP tool from the `perplexity` server first.
+- If the MCP tool is not exposed in the current runtime, run `python3 ~/.codeium/windsurf/skills/perplexity-search/search_only.py "<query>" --json` for a global Windsurf install, or `python3 perplexity_search_only/scripts/search_only.py "<query>" --json` when working from the repository root.
 - Do not use `perplexity_ask`, `perplexity_reason`, or `perplexity_research`.
 - Return 3-5 best results unless the user asks for another count.
 - Include titles, URLs, dates when available, and short notes.

@@ -6,7 +6,7 @@ description: Deep Perplexity research for broad multi-source questions
 
 Use this workflow when the user explicitly wants deep research and accepts higher cost and longer runtime.
 
-Observed billing example: the query “best practices for organizing GitHub” through `sonar-deep-research` cost `$1.38`, mainly from reasoning tokens and search queries.
+Observed billing snapshot after skill tests cost `$2.52`; most of it came from `sonar-deep-research`: 478,195 reasoning tokens (`$1.43`), 117 search queries (`$0.59`), 67,825 citation tokens (`$0.14`), and 15,158 output tokens (`$0.12`).
 
 1. Ask for the research question if it was not provided with the workflow invocation.
 2. Narrow the scope before running the tool: topic, timeframe, geography, competitors, documents, or decision criteria.
