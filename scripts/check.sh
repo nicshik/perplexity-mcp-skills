@@ -24,17 +24,17 @@ python3 perplexity-fetch-url-content/scripts/fetch_url_content.py \
 
 python3 perplexity-pro-search/scripts/pro_search.py --help >/dev/null
 
-rg -q '\$perplexity_search_only' README.md README.en.md .windsurf
-rg -q '\$perplexity-pro-search' README.md README.en.md .windsurf
-rg -q '\$perplexity_deep_research' README.md README.en.md .windsurf
-rg -q '\$perplexity-fetch-url-content' README.md README.en.md .windsurf
-rg -q '@perplexity-search' README.md README.en.md .windsurf
-rg -q '@perplexity-pro' README.md README.en.md .windsurf
-rg -q '@perplexity-research' README.md README.en.md .windsurf
-rg -q '@perplexity-fetch-url' README.md README.en.md .windsurf
-rg -q '/perplexity-search' README.md README.en.md .windsurf
-rg -q '/perplexity-pro' README.md README.en.md .windsurf
-rg -q '/perplexity-research' README.md README.en.md .windsurf
-rg -q '/perplexity-fetch-url' README.md README.en.md .windsurf
+grep -R -q '\$perplexity_search_only' README.md README.en.md .windsurf
+grep -R -q '\$perplexity-pro-search' README.md README.en.md .windsurf
+grep -R -q '\$perplexity_deep_research' README.md README.en.md .windsurf
+grep -R -q '\$perplexity-fetch-url-content' README.md README.en.md .windsurf
+grep -R -q '@perplexity-search' README.md README.en.md .windsurf
+grep -R -q '@perplexity-pro' README.md README.en.md .windsurf
+grep -R -q '@perplexity-research' README.md README.en.md .windsurf
+grep -R -q '@perplexity-fetch-url' README.md README.en.md .windsurf
+grep -R -q '/perplexity-search' README.md README.en.md .windsurf
+grep -R -q '/perplexity-pro' README.md README.en.md .windsurf
+grep -R -q '/perplexity-research' README.md README.en.md .windsurf
+grep -R -q '/perplexity-fetch-url' README.md README.en.md .windsurf
 
 echo "Smoke checks passed."
