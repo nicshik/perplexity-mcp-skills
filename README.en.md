@@ -56,6 +56,17 @@ Important API balance note:
 - If the balance is empty, requests may fail with authorization or billing errors even when the API key is configured correctly.
 - You can add funds in the API settings. See: [API billing](https://www.perplexity.ai/help-center/en/articles/10354847-api-settings-billing).
 
+Observed billing example for `/perplexity-research`: the query “best practices for organizing GitHub” through `sonar-deep-research` cost `$1.38`.
+
+| Component | Usage | Rate | Cost |
+| --- | ---: | ---: | ---: |
+| Input tokens | 97 | `$0.000002` | `$0.00` |
+| Output tokens | 8,411 | `$0.000008` | `$0.07` |
+| Citation tokens | 42,528 | `$0.000002` | `$0.09` |
+| Reasoning tokens | 297,086 | `$0.000003` | `$0.89` |
+| Search queries | 67 | `$0.005` | `$0.34` |
+| **Total** |  |  | **`$1.38`** |
+
 ### 2. Add the official Perplexity MCP server
 
 #### Option A: Codex
