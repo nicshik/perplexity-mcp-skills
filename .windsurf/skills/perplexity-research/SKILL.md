@@ -1,11 +1,11 @@
 ---
 name: perplexity-research
-description: Deep Perplexity research mode. Use only for broad, important questions where higher cost and longer runtime are acceptable.
+description: Deep Research mode through Perplexity MCP. Use only for broad, important questions where higher cost and longer runtime are acceptable.
 ---
 
 # Perplexity Research
 
-Use this skill for deep research through Perplexity.
+Use this skill for Deep Research mode through Perplexity MCP.
 
 Observed billing snapshot after skill tests cost `$2.52`; most of it came from `sonar-deep-research`: 478,195 reasoning tokens (`$1.43`), 117 search queries (`$0.59`), 67,825 citation tokens (`$0.14`), and 15,158 output tokens (`$0.12`).
 

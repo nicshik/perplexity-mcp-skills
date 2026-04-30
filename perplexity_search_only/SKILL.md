@@ -1,6 +1,6 @@
 ---
 name: perplexity_search_only
-description: Недорогой поиск через Perplexity с приоритетом MCP и прямым Search API fallback без перехода в ask, reason или deep research. Использовать, когда нужны ссылки, сниппеты, поиск источников или быстрая проверка свежих сведений.
+description: Режим Search only для недорогого поиска через Perplexity с preferred MCP path и direct Search API fallback. Использовать, когда нужны ссылки, сниппеты, первоисточники или быстрая проверка свежих сведений.
 compatibility:
   runtimes:
     - codex
@@ -19,9 +19,9 @@ metadata:
 
 # Perplexity Search Only
 
-Используй этот навык, когда пользователю нужен свежий дешевый поиск через Perplexity, но не нужны режимы с ответом модели, рассуждением или глубоким исследованием.
+Используй этот skill, когда пользователю нужен mode Search only через Perplexity, а не режим с готовым ответом, reasoning или deep research.
 
-Навык вызывается явно, чтобы оставаться осознанным дешевым путем.
+Skill вызывается явно, чтобы cheap search оставался осознанным отдельным mode.
 
 ## Preconditions
 
@@ -30,8 +30,8 @@ metadata:
 
 ## Non-Negotiable Rules
 
-- Сначала используй MCP `perplexity_search`.
-- Если MCP tool не экспонирован в рантайме или явно недоступен, используй `scripts/search_only.py` как direct Search API fallback.
+- Сначала используй MCP path через `perplexity_search`.
+- Если MCP tool не экспонирован в runtime или явно недоступен, используй `scripts/search_only.py` как direct Search API fallback.
 - Не переходи в `perplexity_ask`, `perplexity_reason` или `perplexity_research`.
 - Возвращай ссылки, даты при наличии и короткие пояснения.
 - Обычно ограничивайся `3-5` лучшими результатами, если пользователь не просит больше.
@@ -39,10 +39,10 @@ metadata:
 ## Default Flow
 
 1. При необходимости преврати запрос пользователя в точную поисковую фразу.
-2. Запусти MCP `perplexity_search`.
-3. Если MCP tool недоступен в текущей сессии, запусти `scripts/search_only.py`.
+2. Запусти MCP path `perplexity_search`.
+3. Если MCP tool недоступен в текущей session, запусти `scripts/search_only.py`.
 4. Верни самые подходящие результаты с короткими пояснениями.
-5. Если пользователю нужен широкий вывод или рекомендация, предложи в следующий раз использовать более глубокий режим, например `$perplexity_deep_research`.
+5. Если пользователю нужен широкий вывод или рекомендация, предложи более тяжелый mode, например `$perplexity-pro-search` или `$perplexity_deep_research`.
 
 ## Recommended Prompt Shape
 

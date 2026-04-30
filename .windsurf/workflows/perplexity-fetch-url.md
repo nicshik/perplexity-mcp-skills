@@ -1,10 +1,10 @@
 ---
-description: Read specific URLs through Perplexity Sonar Pro fetch_url_content
+description: Fetch URL mode through Perplexity Sonar Pro fetch_url_content
 ---
 
 # Perplexity Fetch URL
 
-Use this workflow when the user provides one or more URLs and wants content extracted or answered from those URLs.
+Use this workflow for Fetch URL mode when the user provides one or more URLs and wants content extracted or answered from those URLs.
 
 1. Ask for the URL list if it was not provided with the workflow invocation.
 2. Ask for a focused question only if the user wants Q&A rather than a summary.

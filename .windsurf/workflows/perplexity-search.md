@@ -1,10 +1,10 @@
 ---
-description: Low-cost Perplexity search for links and snippets
+description: Search only mode for low-cost Perplexity links and snippets
 ---
 
 # Perplexity Search
 
-Use this workflow when the user wants a cheap Perplexity lookup with links and snippets.
+Use this workflow for Search only mode when the user wants a cheap Perplexity lookup with links and snippets.
 
 1. Ask for the search query if it was not provided with the workflow invocation.
 2. Prefer the `perplexity_search` MCP tool from the `perplexity` server.

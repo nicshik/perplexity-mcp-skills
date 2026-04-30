@@ -1,6 +1,6 @@
 ---
 name: perplexity-pro-search
-description: Perplexity Pro Search через скрипт, который вызывает Sonar Pro с потоковым ответом и `web_search_options.search_type=pro`. Использовать, когда нужен именно Pro Search, а не простой Search API или дешевый поиск через Perplexity MCP.
+description: Режим Pro Search через local Sonar Pro script с `web_search_options.search_type=pro`. Использовать, когда нужен sourced answer, usage, step log и явный Pro Search mode.
 compatibility:
   runtimes:
     - codex
@@ -20,9 +20,9 @@ metadata:
 
 # Perplexity Pro Search
 
-Используй этот навык, когда пользователю явно нужен Perplexity `Pro Search API` или когда задаче нужен ответ Sonar Pro по текущим источникам, а не просто список ссылок.
+Используй этот skill, когда пользователю явно нужен Perplexity Pro Search mode или когда задаче нужен короткий sourced answer по текущим источникам, а не просто список ссылок.
 
-Навык вызывается явно, потому что Pro Search дороже простого `Search API` и быстрых ответов.
+Skill вызывается явно, потому что Pro Search дороже Search only mode.
 
 ## Preconditions
 
@@ -32,9 +32,9 @@ metadata:
 
 ## Non-Negotiable Rules
 
-- Используй `scripts/pro_search.py`.
+- Используй local script `scripts/pro_search.py`.
 - Сохраняй `stream=true` и `web_search_options.search_type="pro"`.
-- Не переходи незаметно на `perplexity_search`, `perplexity_ask`, `perplexity_reason` или обычный Sonar Pro без потока.
+- Не переходи незаметно на Search only mode, `perplexity_ask`, `perplexity_reason` или обычный Sonar Pro без потока.
 - Используй `--json`, когда Codex должен обработать результат дальше.
 - Держи вопрос узким. Pro Search нужен для сравнений, сложных или зависящих от времени вопросов, а не для простых поисков.
 
@@ -60,7 +60,7 @@ metadata:
 4. Верни короткий ответ и лучшие источники.
 5. Показывай расход только когда это полезно или пользователь просит.
 6. Если ответ выглядит противоречивым или недостаточно официальным, сделай одну точечную проверку по лучшему официальному источнику.
-7. Если пользователю нужны только ссылки, предложи `$perplexity_search_only`.
+7. Если пользователю нужны только ссылки, предложи Search only mode через `$perplexity_search_only`.
 
 ## Recommended Commands
 

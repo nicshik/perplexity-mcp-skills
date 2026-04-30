@@ -1,11 +1,11 @@
 ---
 name: perplexity-search
-description: Low-cost Perplexity search mode. Use when the user needs links, sources, snippets, or quick web lookup without answer synthesis or deep research.
+description: Search only mode for low-cost Perplexity lookup. Use when the user needs links, sources, snippets, or quick web lookup without answer synthesis or deep research.
 ---
 
 # Perplexity Search
 
-Use this skill for cheap Perplexity web search only. Prefer the MCP search tool, but fall back to the direct Search API script if the MCP tool is not exposed in the current runtime.
+Use this skill for Search only mode. Prefer the MCP path, but fall back to the direct Search API script if the MCP tool is not exposed in the current runtime.
 
 Rules:
 

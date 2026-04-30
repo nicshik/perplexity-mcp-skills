@@ -1,6 +1,6 @@
 ---
 name: perplexity-fetch-url-content
-description: Чтение конкретных URL через встроенный инструмент Perplexity Sonar Pro `fetch_url_content`. Использовать, когда нужно прочитать, извлечь или проверить содержимое одной или нескольких страниц глубже поисковых сниппетов.
+description: Режим Fetch URL через встроенный Perplexity Sonar Pro tool `fetch_url_content`. Использовать, когда нужно прочитать, извлечь или проверить одну или несколько страниц глубже поисковых сниппетов.
 compatibility:
   runtimes:
     - codex
@@ -20,9 +20,9 @@ metadata:
 
 # Perplexity Fetch URL Content
 
-Используй этот навык, когда пользователь явно хочет, чтобы Perplexity прочитал один или несколько известных URL через встроенную возможность Sonar Pro `fetch_url_content`.
+Используй этот skill, когда пользователь явно хочет Fetch URL mode для одного или нескольких известных URL через встроенную возможность Sonar Pro `fetch_url_content`.
 
-В документации Perplexity `fetch_url_content` описан как встроенный инструмент Pro Search, который модель включает сама. Это не отдельный endpoint и не пользовательский tool. Поэтому скрипт отправляет строгий запрос в Sonar Pro, а затем проверяет `reasoning_steps`, чтобы понять, какие URL действительно были прочитаны.
+В документации Perplexity `fetch_url_content` описан как встроенный Pro Search tool, который модель включает сама. Это не отдельный endpoint и не пользовательский MCP tool. Поэтому script отправляет строгий запрос в Sonar Pro, а затем проверяет `reasoning_steps`, чтобы понять, какие URL действительно были прочитаны.
 
 ## Preconditions
 
@@ -32,7 +32,7 @@ metadata:
 
 ## Non-Negotiable Rules
 
-- Используй `scripts/fetch_url_content.py`.
+- Используй local script `scripts/fetch_url_content.py`.
 - Сохраняй `stream=true`, `stream_mode="concise"` и `web_search_options.search_type="pro"`.
 - Не утверждай, что API возвращает полный сырой HTML или гарантирует дословную выгрузку всей страницы.
 - Используй `--json`, когда Codex должен проверить `fetched_urls`, `missing_requested_urls` или расход.

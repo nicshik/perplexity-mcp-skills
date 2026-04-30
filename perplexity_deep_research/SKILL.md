@@ -1,6 +1,6 @@
 ---
 name: perplexity_deep_research
-description: Глубокое исследование через Perplexity MCP для широких и важных вопросов по многим источникам, когда допустимы больший расход и более долгое выполнение.
+description: Режим Deep Research через Perplexity MCP для широких и важных multi-source вопросов, когда допустимы высокий расход и более долгое выполнение.
 compatibility:
   runtimes:
     - codex
@@ -20,9 +20,9 @@ metadata:
 
 # Perplexity Deep Research
 
-Используй этот навык, когда задаче явно нужно глубокое исследование по многим источникам через Perplexity MCP и больший расход допустим.
+Используй этот skill, когда задаче явно нужен Deep Research mode по многим источникам через Perplexity MCP и больший расход допустим.
 
-Навык вызывается явно, потому что `perplexity_research` может расходовать заметно больше кредитов, чем поиск и обычные ответы.
+Skill вызывается явно, потому что `perplexity_research` заметно дороже Search only и Pro Search modes.
 
 Реальный снимок биллинга после тестов навыков стоил `$2.52`; основная часть пришлась на `sonar-deep-research`: 478 195 reasoning tokens (`$1.43`), 117 поисковых запросов (`$0.59`), 67 825 citation tokens (`$0.14`) и 15 158 output tokens (`$0.12`).
 
@@ -33,18 +33,18 @@ metadata:
 
 ## Non-Negotiable Rules
 
-- Используй только `perplexity_research`.
+- Используй только MCP path `perplexity_research`.
 - Не заменяй его незаметно на `perplexity_search`, `perplexity_ask` или `perplexity_reason`.
 - Даже в глубоком режиме держи границы вопроса узкими.
 - Отдавай приоритет практическому выводу, а не общим формулировкам.
 
 ## Default Flow
 
-1. Убедись, что вопрос достаточно широкий и важный для глубокого исследования.
+1. Убедись, что вопрос действительно требует Deep Research mode.
 2. Сузь область: рынок, набор конкурентов, период, документы или конкретный предмет сравнения.
 3. Запусти `perplexity_research`.
 4. Верни короткий вывод с самыми сильными ссылками.
-5. Если пользователю были нужны только ссылки, предложи в следующий раз `$perplexity_search_only`.
+5. Если пользователю были нужны только ссылки или короткий sourced answer, предложи в следующий раз `$perplexity_search_only` или `$perplexity-pro-search`.
 
 ## Recommended Prompt Shape
 

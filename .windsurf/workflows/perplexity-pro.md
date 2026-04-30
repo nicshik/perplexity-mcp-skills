@@ -1,10 +1,10 @@
 ---
-description: Perplexity Pro Search with sources, reasoning steps, and usage cost
+description: Pro Search mode with sources, reasoning steps, and usage cost
 ---
 
 # Perplexity Pro Search
 
-Use this workflow when the user wants a concise sourced answer through Sonar Pro Search.
+Use this workflow for Pro Search mode when the user wants a concise sourced answer through Sonar Pro Search.
 
 1. Ask for the query if it was not provided with the workflow invocation.
 2. Run `python3 ~/.codeium/windsurf/skills/perplexity-pro/pro_search.py "<query>" --context-size medium --json` for a global Windsurf install, or `python3 perplexity-pro-search/scripts/pro_search.py "<query>" --context-size medium --json` from the repository root.

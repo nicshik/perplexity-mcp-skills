@@ -1,11 +1,11 @@
 ---
 name: perplexity-fetch-url
-description: Read specific URLs through Perplexity Sonar Pro fetch_url_content. Use when the user provides one or more URLs and wants page content extracted or answered from those URLs.
+description: Fetch URL mode through Perplexity Sonar Pro fetch_url_content. Use when the user provides one or more URLs and wants page content extracted or answered from those URLs.
 ---
 
 # Perplexity Fetch URL
 
-Use this skill when the user wants Perplexity to read known URLs through a local script path that works both in a global Windsurf install and from the repository root.
+Use this skill for Fetch URL mode when the user wants Perplexity to read known URLs through a local script path that works both in a global Windsurf install and from the repository root.
 
 Rules:
 

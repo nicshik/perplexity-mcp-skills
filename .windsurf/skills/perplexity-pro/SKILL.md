@@ -1,11 +1,11 @@
 ---
 name: perplexity-pro
-description: Perplexity Pro Search mode through the local Sonar Pro script. Use when the user needs a concise sourced answer, Pro Search, reasoning/tool steps, or usage cost.
+description: Pro Search mode through the local Sonar Pro script. Use when the user needs a concise sourced answer, step log, or usage cost.
 ---
 
 # Perplexity Pro Search
 
-Use this skill for Sonar Pro Search through a local script path that works both in a global Windsurf install and from the repository root.
+Use this skill for Pro Search mode through a local script path that works both in a global Windsurf install and from the repository root.
 
 Rules:
 
