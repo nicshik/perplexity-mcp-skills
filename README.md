@@ -111,15 +111,29 @@ cd perplexity-mcp-skills
 
 Установщик копирует навыки в `${CODEX_HOME:-$HOME/.codex}/skills`.
 
-### 5. Используйте правила для Windsurf
+### 5. Используйте Skills и Workflows для Windsurf
 
-Для Windsurf в репозитории есть файл `.windsurf/rules/perplexity-mcp-skills.md`. Он подсказывает Cascade, какие режимы Perplexity использовать и когда не переходить в дорогие вызовы.
+Для Windsurf в репозитории есть три уровня интеграции:
 
-Если вы работаете прямо из этого репозитория в Windsurf, правило уже лежит в рабочей папке. Если хотите использовать его в другом проекте, скопируйте файл в `.windsurf/rules/` нужного проекта.
+- `.windsurf/skills/` — ручной вызов через `@perplexity-search`, `@perplexity-research`, `@perplexity-pro`, `@perplexity-fetch-url`.
+- `.windsurf/workflows/` — slash-команды через Trigger Workflow: `/perplexity-search`, `/perplexity-research`, `/perplexity-pro`, `/perplexity-fetch-url`.
+- `.windsurf/rules/perplexity-mcp-skills.md` — общие правила маршрутизации и контроля стоимости.
+
+Если вы работаете прямо из этого репозитория в Windsurf, workspace skills и workflows уже лежат в рабочей папке. Если хотите использовать их глобально во всех проектах, запустите:
+
+```bash
+PERPLEXITY_API_KEY="ваш_ключ" ./scripts/install_to_windsurf.sh
+```
+
+Установщик скопирует:
+
+- skills в `~/.codeium/windsurf/skills/`;
+- workflows в `~/.codeium/windsurf/global_workflows/`;
+- MCP-конфиг в `~/.codeium/windsurf/mcp_config.json`.
 
 ### 6. Перезапустите Codex или Windsurf
 
-После перезапуска навыки можно вызывать явно:
+После перезапуска Codex навыки можно вызывать явно:
 
 ```text
 $perplexity_search_only <запрос>
@@ -128,7 +142,36 @@ $perplexity_deep_research <запрос>
 $perplexity-fetch-url-content <url> [url ...]
 ```
 
+В Windsurf используйте короткие ручные вызовы:
+
+```text
+@perplexity-search <запрос>
+@perplexity-pro <запрос>
+@perplexity-research <запрос>
+@perplexity-fetch-url <url> [url ...]
+```
+
+Или Trigger Workflow:
+
+```text
+/perplexity-search
+/perplexity-pro
+/perplexity-research
+/perplexity-fetch-url
+```
+
 ## Как выбрать навык
+
+### Быстрый запуск в Windsurf
+
+В Windsurf не нужно писать длинные фразы с названиями внутренних MCP-методов. Используйте `@` для Skills или `/` для Workflows:
+
+| Задача | Windsurf Skill | Windsurf Workflow | Codex Skill |
+| --- | --- | --- | --- |
+| Дешево найти ссылки | `@perplexity-search` | `/perplexity-search` | `$perplexity_search_only` |
+| Получить ответ через Pro Search | `@perplexity-pro` | `/perplexity-pro` | `$perplexity-pro-search` |
+| Глубоко исследовать тему | `@perplexity-research` | `/perplexity-research` | `$perplexity_deep_research` |
+| Прочитать конкретные URL | `@perplexity-fetch-url` | `/perplexity-fetch-url` | `$perplexity-fetch-url-content` |
 
 ### `$perplexity_search_only`
 
