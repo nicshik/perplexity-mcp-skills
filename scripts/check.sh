@@ -8,7 +8,7 @@ cd "$ROOT_DIR"
 
 required_files=(
   README.md
-  README.en.md
+  README.ru.md
   skills_manifest.yaml
   .github/workflows/ci.yml
   perplexity_search_only/SKILL.md
@@ -52,27 +52,27 @@ python3 perplexity-pro-search/scripts/pro_search.py --help >/dev/null
 
 grep -q 'Codex' README.md
 grep -q 'Windsurf' README.md
-grep -q 'Codex' README.en.md
-grep -q 'Windsurf' README.en.md
-grep -q 'Что выбрать за 30 секунд' README.md
-grep -q 'What To Pick In 30 Seconds' README.en.md
-grep -q 'Матрица совместимости' README.md
-grep -q 'Compatibility Matrix' README.en.md
+grep -q 'Codex' README.ru.md
+grep -q 'Windsurf' README.ru.md
+grep -q 'What To Pick In 30 Seconds' README.md
+grep -q 'Что выбрать за 30 секунд' README.ru.md
+grep -q 'Compatibility Matrix' README.md
+grep -q 'Матрица совместимости' README.ru.md
 grep -q 'Troubleshooting' README.md
-grep -q 'Troubleshooting' README.en.md
+grep -q 'Troubleshooting' README.ru.md
 
-grep -R -q '\$perplexity_search_only' README.md README.en.md .windsurf
-grep -R -q '\$perplexity-pro-search' README.md README.en.md .windsurf
-grep -R -q '\$perplexity_deep_research' README.md README.en.md .windsurf
-grep -R -q '\$perplexity-fetch-url-content' README.md README.en.md .windsurf
-grep -R -q '@perplexity-search' README.md README.en.md .windsurf
-grep -R -q '@perplexity-pro' README.md README.en.md .windsurf
-grep -R -q '@perplexity-research' README.md README.en.md .windsurf
-grep -R -q '@perplexity-fetch-url' README.md README.en.md .windsurf
-grep -R -q '/perplexity-search' README.md README.en.md .windsurf
-grep -R -q '/perplexity-pro' README.md README.en.md .windsurf
-grep -R -q '/perplexity-research' README.md README.en.md .windsurf
-grep -R -q '/perplexity-fetch-url' README.md README.en.md .windsurf
+grep -R -q '\$perplexity_search_only' README.md README.ru.md .windsurf
+grep -R -q '\$perplexity-pro-search' README.md README.ru.md .windsurf
+grep -R -q '\$perplexity_deep_research' README.md README.ru.md .windsurf
+grep -R -q '\$perplexity-fetch-url-content' README.md README.ru.md .windsurf
+grep -R -q '@perplexity-search' README.md README.ru.md .windsurf
+grep -R -q '@perplexity-pro' README.md README.ru.md .windsurf
+grep -R -q '@perplexity-research' README.md README.ru.md .windsurf
+grep -R -q '@perplexity-fetch-url' README.md README.ru.md .windsurf
+grep -R -q '/perplexity-search' README.md README.ru.md .windsurf
+grep -R -q '/perplexity-pro' README.md README.ru.md .windsurf
+grep -R -q '/perplexity-research' README.md README.ru.md .windsurf
+grep -R -q '/perplexity-fetch-url' README.md README.ru.md .windsurf
 
 grep -q 'purpose: "Search only mode through Perplexity MCP with direct Search API fallback"' skills_manifest.yaml
 grep -q 'purpose: "Deep Research mode through Perplexity MCP"' skills_manifest.yaml

@@ -1,28 +1,28 @@
 # Perplexity MCP Skills
 
-Набор Perplexity modes для Codex и Windsurf: дешевый поиск, Pro Search, deep research и чтение конкретных URL.
+A Perplexity mode bundle for Codex and Windsurf: low-cost search, Pro Search, deep research, and reading specific URLs.
 
-[🇬🇧 Read in English](README.en.md)
+[🇷🇺 Читать на русском](README.ru.md)
 
-## Что это
+## What This Repo Is
 
-Репозиторий упаковывает четыре раздельных режима работы с Perplexity, чтобы контролировать цену, глубину и способ вызова:
+This repository packages four separate Perplexity modes so cost, depth, and invocation style stay explicit:
 
-- `Codex` использует явные skill-вызовы `$perplexity_*`.
-- `Windsurf` использует skills `@perplexity-*` и workflows `/perplexity-*`.
+- `Codex` uses explicit skill calls such as `$perplexity_*`.
+- `Windsurf` uses skills `@perplexity-*` and workflows `/perplexity-*`.
 
-Разделение намеренное: быстрый поиск не должен незаметно превращаться в дорогое исследование, а чтение конкретного URL не должно смешиваться с обычным поиском.
+The separation is intentional: a quick lookup should not silently become expensive research, and reading a specific URL should not be mixed with general search.
 
-## Что выбрать за 30 секунд
+## What To Pick In 30 Seconds
 
-| Задача | Режим | Codex | Windsurf | Нужен MCP |
+| Job | Mode | Codex | Windsurf | Needs MCP |
 | --- | --- | --- | --- | --- |
-| Найти ссылки и сниппеты | Search only | `$perplexity_search_only` | `@perplexity-search` / `/perplexity-search` | Предпочтительно |
-| Получить краткий ответ с источниками | Pro Search | `$perplexity-pro-search` | `@perplexity-pro` / `/perplexity-pro` | Нет |
-| Сделать широкий разбор по многим источникам | Deep Research | `$perplexity_deep_research` | `@perplexity-research` / `/perplexity-research` | Да |
-| Прочитать один или несколько известных URL | Fetch URL | `$perplexity-fetch-url-content` | `@perplexity-fetch-url` / `/perplexity-fetch-url` | Нет |
+| Find links and snippets | Search only | `$perplexity_search_only` | `@perplexity-search` / `/perplexity-search` | Preferred |
+| Get a short answer with sources | Pro Search | `$perplexity-pro-search` | `@perplexity-pro` / `/perplexity-pro` | No |
+| Run a broad multi-source review | Deep Research | `$perplexity_deep_research` | `@perplexity-research` / `/perplexity-research` | Yes |
+| Read one or more known URLs | Fetch URL | `$perplexity-fetch-url-content` | `@perplexity-fetch-url` / `/perplexity-fetch-url` | No |
 
-## Матрица совместимости
+## Compatibility Matrix
 
 | Mode | Codex | Windsurf | Needs MCP | Needs API key | Direct fallback | Typical cost/speed |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -31,35 +31,35 @@
 | Deep Research | `$perplexity_deep_research` | `@perplexity-research` / `/perplexity-research` | Yes | Yes | None | Highest cost, slowest |
 | Fetch URL | `$perplexity-fetch-url-content` | `@perplexity-fetch-url` / `/perplexity-fetch-url` | No | Yes | N/A | Medium cost, page-dependent |
 
-## Быстрый старт
+## Quick Setup
 
-### 1. Получите API-ключ Perplexity
+### 1. Get a Perplexity API key
 
-Создайте API-ключ в [консоли Perplexity](https://console.perplexity.ai/). Не добавляйте ключ в файлы репозитория.
+Create an API key in the [Perplexity console](https://console.perplexity.ai/). Do not store the key in repository files.
 
-Важно про баланс API:
+Important billing note:
 
-- Подписка Perplexity Pro больше не включает ежемесячные API-кредиты.
-- Для Sonar API нужен отдельный баланс в [консоли Perplexity](https://console.perplexity.ai/).
-- Если баланс пустой, запросы могут завершаться ошибками авторизации или оплаты даже при корректном ключе.
+- A Perplexity Pro subscription no longer includes monthly API credits.
+- Sonar API uses a separate balance in the [Perplexity console](https://console.perplexity.ai/).
+- If the balance is empty, requests may fail with authorization or billing errors even when the key is configured correctly.
 
-### 2. Подключите официальный MCP-сервер Perplexity
+### 2. Add the official Perplexity MCP server
 
 #### Codex
 
 ```bash
-codex mcp add perplexity --env PERPLEXITY_API_KEY="ваш_ключ" -- npx -y @perplexity-ai/mcp-server
+codex mcp add perplexity --env PERPLEXITY_API_KEY="your_key" -- npx -y @perplexity-ai/mcp-server
 ```
 
 #### Windsurf
 
 ```bash
-PERPLEXITY_API_KEY="ваш_ключ" ./scripts/install_to_windsurf.sh
+PERPLEXITY_API_KEY="your_key" ./scripts/install_to_windsurf.sh
 ```
 
-Скрипт добавляет MCP-сервер Perplexity в `~/.codeium/windsurf/mcp_config.json`.
+The script adds the Perplexity MCP server to `~/.codeium/windsurf/mcp_config.json`.
 
-Можно также добавить MCP вручную:
+You can also add MCP manually:
 
 ```json
 {
@@ -68,35 +68,35 @@ PERPLEXITY_API_KEY="ваш_ключ" ./scripts/install_to_windsurf.sh
       "command": "npx",
       "args": ["-y", "@perplexity-ai/mcp-server"],
       "env": {
-        "PERPLEXITY_API_KEY": "ваш_ключ"
+        "PERPLEXITY_API_KEY": "your_key"
       }
     }
   }
 }
 ```
 
-`$perplexity_deep_research` требует MCP. Для `$perplexity_search_only` MCP остается предпочтительным путем, но при отсутствии инструмента в runtime доступен direct fallback через Search API script.
+`$perplexity_deep_research` requires MCP. `$perplexity_search_only` still prefers the MCP path, but it has a direct Search API fallback if the tool is not exposed in the active runtime.
 
-Если MCP не нужен, прямые скрипты тоже умеют читать ключ из:
+If you do not want MCP, the direct scripts can read the key from:
 
 - `PERPLEXITY_API_KEY`
-- `~/.codex/config.toml` или `CODEX_HOME/config.toml`
+- `~/.codex/config.toml` or `CODEX_HOME/config.toml`
 - `~/.codeium/windsurf/mcp_config.json`
 
-Перед запуском direct scripts установите зависимости:
+Before running direct scripts, install dependencies:
 
 ```bash
 python3 -m pip install -r requirements.txt
 ```
 
-### 3. Склонируйте репозиторий
+### 3. Clone the repository
 
 ```bash
 git clone https://github.com/nicshik/perplexity-mcp-skills.git
 cd perplexity-mcp-skills
 ```
 
-### 4. Подключите способ вызова в вашей среде
+### 4. Enable invocation in your environment
 
 #### Codex
 
@@ -104,45 +104,45 @@ cd perplexity-mcp-skills
 ./scripts/install_to_codex.sh
 ```
 
-После этого доступны явные вызовы:
+After that, the skills are available as explicit calls:
 
 ```text
-$perplexity_search_only <запрос>
-$perplexity-pro-search <запрос>
-$perplexity_deep_research <запрос>
+$perplexity_search_only <query>
+$perplexity-pro-search <query>
+$perplexity_deep_research <query>
 $perplexity-fetch-url-content <url> [url ...]
 ```
 
 #### Windsurf
 
-Для Windsurf в репозитории есть три слоя интеграции:
+For Windsurf, the repository contains three integration layers:
 
-- `.windsurf/skills/` для `@perplexity-search`, `@perplexity-research`, `@perplexity-pro`, `@perplexity-fetch-url`
-- `.windsurf/workflows/` для `/perplexity-search`, `/perplexity-research`, `/perplexity-pro`, `/perplexity-fetch-url`
-- `.windsurf/rules/perplexity-mcp-skills.md` для общей маршрутизации и cost control
+- `.windsurf/skills/` for `@perplexity-search`, `@perplexity-research`, `@perplexity-pro`, `@perplexity-fetch-url`
+- `.windsurf/workflows/` for `/perplexity-search`, `/perplexity-research`, `/perplexity-pro`, `/perplexity-fetch-url`
+- `.windsurf/rules/perplexity-mcp-skills.md` for shared routing and cost control
 
-Если хотите установить их глобально:
+To install them globally:
 
 ```bash
-PERPLEXITY_API_KEY="ваш_ключ" ./scripts/install_to_windsurf.sh
+PERPLEXITY_API_KEY="your_key" ./scripts/install_to_windsurf.sh
 ```
 
-Установщик копирует:
+The installer copies:
 
-- skills в `~/.codeium/windsurf/skills/`
-- workflows в `~/.codeium/windsurf/global_workflows/`
-- MCP-конфиг в `~/.codeium/windsurf/mcp_config.json`
+- skills to `~/.codeium/windsurf/skills/`
+- workflows to `~/.codeium/windsurf/global_workflows/`
+- MCP config to `~/.codeium/windsurf/mcp_config.json`
 
-После перезапуска Windsurf используйте:
+After restarting Windsurf, use:
 
 ```text
-@perplexity-search <запрос>
-@perplexity-pro <запрос>
-@perplexity-research <запрос>
+@perplexity-search <query>
+@perplexity-pro <query>
+@perplexity-research <query>
 @perplexity-fetch-url <url> [url ...]
 ```
 
-Или workflows:
+Or workflows:
 
 ```text
 /perplexity-search
@@ -151,45 +151,45 @@ PERPLEXITY_API_KEY="ваш_ключ" ./scripts/install_to_windsurf.sh
 /perplexity-fetch-url
 ```
 
-## Примеры по задачам
+## Examples By Job To Be Done
 
-### Найти источники быстро и дешево
-
-```text
-Используй $perplexity_search_only, чтобы найти официальную документацию Perplexity MCP server и вернуть 5 лучших ссылок с короткими пояснениями.
-```
-
-### Получить краткий ответ с источниками
+### Find sources quickly and cheaply
 
 ```text
-Используй $perplexity-pro-search, чтобы сравнить текущие варианты настройки Perplexity MCP server для Codex и Windsurf и вернуть краткий ответ со ссылками.
+Use $perplexity_search_only to find the official Perplexity MCP server documentation and return the 5 best links with short notes.
 ```
 
-### Глубоко исследовать тему
+### Get a short answer with sources
 
 ```text
-Используй $perplexity_deep_research для глубокого исследования лучших практик организации GitHub. Сфокусируйся на практических выводах и пиши кратко.
+Use $perplexity-pro-search to compare the current Perplexity MCP setup options for Codex and Windsurf and return a concise sourced answer.
 ```
 
-### Прочитать конкретный URL
+### Deeply research a topic
 
 ```text
-Используй $perplexity-fetch-url-content, чтобы прочитать https://docs.perplexity.ai/docs/sonar/pro-search/tools и кратко пересказать ключевые ограничения fetch_url_content.
+Use $perplexity_deep_research to deeply research best practices for organizing GitHub. Focus on practical takeaways and keep the answer concise.
 ```
 
-## Описание режимов
+### Read a specific URL
+
+```text
+Use $perplexity-fetch-url-content to read https://docs.perplexity.ai/docs/sonar/pro-search/tools and summarize the key fetch_url_content limitations.
+```
+
+## Mode Guide
 
 ### Search only
 
-Самый дешевый режим. Используйте его, когда нужны ссылки, даты, сниппеты и первоисточники без синтеза ответа.
+The lowest-cost mode. Use it when you need links, dates, snippets, and primary sources without answer synthesis.
 
 - Preferred path: MCP `perplexity_search`
 - Direct fallback: `perplexity_search_only/scripts/search_only.py`
-- Не должен переключаться в `perplexity_ask`, `perplexity_reason` или `perplexity_research`
+- It should not switch into `perplexity_ask`, `perplexity_reason`, or `perplexity_research`
 
 ### Pro Search
 
-Средний режим между поиском ссылок и deep research. Нужен, когда важен готовый ответ с источниками и явный `search_type=pro`.
+The middle mode between link lookup and deep research. Use it when you want a ready answer with sources and explicit `search_type=pro`.
 
 - Path: `perplexity-pro-search/scripts/pro_search.py`
 - Model path: `sonar-pro`
@@ -197,61 +197,61 @@ PERPLEXITY_API_KEY="ваш_ключ" ./scripts/install_to_windsurf.sh
 
 ### Deep Research
 
-Самый дорогой режим. Используйте только для широких вопросов по многим источникам, когда более долгий runtime и больший расход оправданы.
+The most expensive mode. Use it only for broad multi-source questions where longer runtime and higher cost are justified.
 
 - Path: MCP `perplexity_research`
-- Fallback: отсутствует
-- Scope: держите вопрос узким даже в deep mode
+- Fallback: none
+- Scope: keep the question narrow even in deep mode
 
 ### Fetch URL
 
-Режим для чтения конкретных URL через встроенный Sonar Pro tool `fetch_url_content`.
+The mode for reading specific URLs through the built-in Sonar Pro tool `fetch_url_content`.
 
 - Path: `perplexity-fetch-url-content/scripts/fetch_url_content.py`
-- Используйте `--require-fetch`, если нужно подтвердить чтение каждого URL
-- Не подразумевайте, что API возвращает полный raw HTML
+- Use `--require-fetch` when every requested URL must be confirmed
+- Do not imply that the API returns full raw HTML
 
-## Проверка
+## Verification
 
-Единая локальная smoke-проверка:
+One offline-safe local smoke check:
 
 ```bash
 ./scripts/check.sh
 ```
 
-Скрипт делает offline-safe проверки:
+The script runs:
 
-- `python3 -m py_compile` для `perplexity_common.py` и direct scripts
+- `python3 -m py_compile` for `perplexity_common.py` and the direct scripts
 - `search_only.py --dry-run --json`
 - `fetch_url_content.py --dry-run --json`
 - `pro_search.py --help`
-- проверку ключевых invocation names в README и `.windsurf/`
+- a grep check for key invocation names in README and `.windsurf/`
 
-Запуск с реальным обращением к Perplexity оставлен ручным, потому что он расходует API-кредиты.
+Live Perplexity requests are intentionally left out of CI and this smoke check because they spend API credits.
 
 ## Troubleshooting
 
-| Проблема | Что проверить |
+| Problem | What to check |
 | --- | --- |
-| `perplexity_search` не экспонирован в session | Используйте direct fallback `perplexity_search_only/scripts/search_only.py --json` или соответствующий Windsurf skill path |
-| `PERPLEXITY_API_KEY` не найден | Проверьте shell env, `~/.codex/config.toml`, `CODEX_HOME/config.toml`, `~/.codeium/windsurf/mcp_config.json` |
-| Ошибка billing/auth в Sonar API | Убедитесь, что в консоли Perplexity пополнен API balance, а не только активна Pro subscription |
-| URL не попал в `fetched_urls` | Запустите Fetch URL mode с `--require-fetch` и проверьте `missing_requested_urls` |
-| Песочница блокирует сеть | Повторите тот же script с повышенным доступом, не подменяя режим другим mode |
-| CI падает на smoke checks | Сначала локально запустите `./scripts/check.sh`, затем сравните README invocation names и ожидаемую структуру репозитория |
+| `perplexity_search` is not exposed in the session | Use the direct fallback `perplexity_search_only/scripts/search_only.py --json` or the matching Windsurf skill path |
+| `PERPLEXITY_API_KEY` is missing | Check shell env, `~/.codex/config.toml`, `CODEX_HOME/config.toml`, `~/.codeium/windsurf/mcp_config.json` |
+| Sonar API billing/auth error | Make sure the Perplexity API balance is funded, not just the Pro subscription |
+| A URL is missing from `fetched_urls` | Run Fetch URL mode with `--require-fetch` and inspect `missing_requested_urls` |
+| The sandbox blocks network access | Re-run the same script with elevated access instead of switching to another mode |
+| CI fails on smoke checks | Run `./scripts/check.sh` locally first, then compare README invocation names and the expected repository structure |
 
-## Примеры стоимости
+## Cost Notes
 
-Наблюдаемые примеры стоимости:
+Observed cost examples:
 
-- `/perplexity-search`: пример с `4` Search API запросами стоил **`$0.02`**
-- `/perplexity-pro`: недавний запуск стоил **`$0.01819`**
-- `/perplexity-fetch-url`: недавний summary-вызов стоил **`$0.01894`**
-- `/perplexity-research`: один deep research запуск стоил **`$1.38`**
+- `/perplexity-search`: an example with `4` Search API requests cost **`$0.02`**
+- `/perplexity-pro`: a recent run cost **`$0.01819`**
+- `/perplexity-fetch-url`: a recent summary run cost **`$0.01894`**
+- `/perplexity-research`: one deep research run cost **`$1.38`**
 
-Deep Research почти всегда заметно дороже остальных режимов.
+Deep Research is almost always much more expensive than the other modes.
 
-## Структура репозитория
+## Repository Structure
 
 ```text
 perplexity_search_only/              # Codex skill + direct Search API fallback
@@ -268,9 +268,9 @@ perplexity_common.py                 # Shared direct-script helpers
 skills_manifest.yaml                 # Bundle manifest and install/source-of-truth paths
 ```
 
-## Замечания
+## Notes
 
-- Включенный MCP-сервер в UI не гарантирует, что tool будет экспонирован в конкретной agent session.
-- Для этого случая у search mode есть direct fallback через Search API.
-- `skills_manifest.yaml` остается легковесным source of truth для install paths и Windsurf mappings.
-- `LICENSE` в этот rollout не добавлялась: текущий проход ограничен docs, verification и repo metadata.
+- An MCP server being enabled in the UI does not guarantee that its tool is exposed in a specific agent session.
+- Search mode includes a direct Search API fallback for that case.
+- `skills_manifest.yaml` remains the lightweight source of truth for install paths and Windsurf mappings.
+- No `LICENSE` was added in this rollout: this pass is intentionally limited to docs, verification, and repo metadata.

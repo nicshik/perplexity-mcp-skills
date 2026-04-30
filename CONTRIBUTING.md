@@ -23,7 +23,7 @@ Prefer changes that keep these guarantees explicit:
 ```
 
 3. If you touch direct scripts, keep verification offline-safe unless the change explicitly requires live API validation.
-4. If you change docs, keep `README.md`, `README.en.md`, `.windsurf/`, and `skills_manifest.yaml` aligned.
+4. If you change docs, keep `README.md`, `README.ru.md`, `.windsurf/`, and `skills_manifest.yaml` aligned.
 
 ## Contribution Style
 
