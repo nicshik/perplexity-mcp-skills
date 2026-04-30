@@ -33,7 +33,7 @@
 
 ## Быстрый старт
 
-### 1. Get a Perplexity API key
+### 1. Получите API-ключ Perplexity
 
 Создайте API-ключ в [консоли Perplexity](https://console.perplexity.ai/). Не добавляйте ключ в файлы репозитория.
 
@@ -229,6 +229,17 @@ PERPLEXITY_API_KEY="ваш_ключ" ./scripts/install_to_windsurf.sh
 
 Запуск с реальным обращением к Perplexity оставлен ручным, потому что он расходует API-кредиты.
 
+## Troubleshooting
+
+| Проблема | Что проверить |
+| --- | --- |
+| `perplexity_search` не экспонирован в session | Используйте direct fallback `perplexity_search_only/scripts/search_only.py --json` или соответствующий Windsurf skill path |
+| `PERPLEXITY_API_KEY` не найден | Проверьте shell env, `~/.codex/config.toml`, `CODEX_HOME/config.toml`, `~/.codeium/windsurf/mcp_config.json` |
+| Ошибка billing/auth в Sonar API | Убедитесь, что в консоли Perplexity пополнен API balance, а не только активна Pro subscription |
+| URL не попал в `fetched_urls` | Запустите Fetch URL mode с `--require-fetch` и проверьте `missing_requested_urls` |
+| Песочница блокирует сеть | Повторите тот же script с повышенным доступом, не подменяя режим другим mode |
+| CI падает на smoke checks | Сначала локально запустите `./scripts/check.sh`, затем сравните README invocation names и ожидаемую структуру репозитория |
+
 ## Примеры стоимости
 
 Наблюдаемые примеры стоимости:
@@ -254,10 +265,12 @@ scripts/install_to_codex.sh          # Global Codex install
 scripts/install_to_windsurf.sh       # Global Windsurf install
 scripts/check.sh                     # Offline-safe smoke verification
 perplexity_common.py                 # Shared direct-script helpers
+skills_manifest.yaml                 # Bundle manifest and install/source-of-truth paths
 ```
 
 ## Замечания
 
 - Включенный MCP-сервер в UI не гарантирует, что tool будет экспонирован в конкретной agent session.
 - Для этого случая у search mode есть direct fallback через Search API.
+- `skills_manifest.yaml` остается легковесным source of truth для install paths и Windsurf mappings.
 - `LICENSE` в этот rollout не добавлялась: текущий проход ограничен docs, verification и repo metadata.

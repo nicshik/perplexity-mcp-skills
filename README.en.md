@@ -231,6 +231,17 @@ Live Perplexity requests are intentionally left out of CI and this smoke check b
 
 ## Cost Notes
 
+## Troubleshooting
+
+| Problem | What to check |
+| --- | --- |
+| `perplexity_search` is not exposed in the session | Use the direct fallback `perplexity_search_only/scripts/search_only.py --json` or the matching Windsurf skill path |
+| `PERPLEXITY_API_KEY` is missing | Check shell env, `~/.codex/config.toml`, `CODEX_HOME/config.toml`, `~/.codeium/windsurf/mcp_config.json` |
+| Sonar API billing/auth error | Make sure the Perplexity API balance is funded, not just the Pro subscription |
+| A URL is missing from `fetched_urls` | Run Fetch URL mode with `--require-fetch` and inspect `missing_requested_urls` |
+| The sandbox blocks network access | Re-run the same script with elevated access instead of switching to another mode |
+| CI fails on smoke checks | Run `./scripts/check.sh` locally first, then compare README invocation names and the expected repository structure |
+
 Observed cost examples:
 
 - `/perplexity-search`: an example with `4` Search API requests cost **`$0.02`**
@@ -254,10 +265,12 @@ scripts/install_to_codex.sh          # Global Codex install
 scripts/install_to_windsurf.sh       # Global Windsurf install
 scripts/check.sh                     # Offline-safe smoke verification
 perplexity_common.py                 # Shared direct-script helpers
+skills_manifest.yaml                 # Bundle manifest and install/source-of-truth paths
 ```
 
 ## Notes
 
 - An MCP server being enabled in the UI does not guarantee that its tool is exposed in a specific agent session.
 - Search mode includes a direct Search API fallback for that case.
+- `skills_manifest.yaml` remains the lightweight source of truth for install paths and Windsurf mappings.
 - No `LICENSE` was added in this rollout: this pass is intentionally limited to docs, verification, and repo metadata.
