@@ -25,6 +25,8 @@ The separation is intentional: a quick lookup should not silently become expensi
 | Run a broad multi-source review | Deep Research | `$perplexity_deep_research` | `@perplexity-research` / `/perplexity-research` | Yes |
 | Read one or more known URLs | Fetch URL | `$perplexity-fetch-url-content` | `@perplexity-fetch-url` / `/perplexity-fetch-url` | No |
 
+`Cursor`, `Claude Code`, and `Antigravity` use the same four modes through project configs and repository guidance instead of Codex/Windsurf-style invocation syntax. Their setup is documented below.
+
 ## Compatibility Matrix
 
 | Mode | Codex | Windsurf | Needs MCP | Needs API key | Direct fallback | Typical cost/speed |

@@ -25,6 +25,8 @@
 | Сделать широкий разбор по многим источникам | Deep Research | `$perplexity_deep_research` | `@perplexity-research` / `/perplexity-research` | Да |
 | Прочитать один или несколько известных URL | Fetch URL | `$perplexity-fetch-url-content` | `@perplexity-fetch-url` / `/perplexity-fetch-url` | Нет |
 
+`Cursor`, `Claude Code` и `Antigravity` используют те же четыре режима через project configs и repository guidance, а не через синтаксис вызовов в стиле Codex/Windsurf. Их настройка описана ниже.
+
 ## Матрица совместимости
 
 | Mode | Codex | Windsurf | Needs MCP | Needs API key | Direct fallback | Typical cost/speed |
