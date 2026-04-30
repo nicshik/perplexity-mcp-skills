@@ -1,6 +1,6 @@
 interface:
   display_name: "Perplexity Fetch URL"
-  short_description: "Чтение страниц по URL через Sonar Pro"
+  short_description: "Чтение URL через Perplexity для Codex и Windsurf"
   brand_color: "#0F766E"
   default_prompt: "Используй $perplexity-fetch-url-content, чтобы прочитать указанные URL через Sonar Pro fetch_url_content, и сообщи, какие URL были прочитаны."
 

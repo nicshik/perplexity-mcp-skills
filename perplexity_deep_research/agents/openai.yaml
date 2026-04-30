@@ -1,6 +1,6 @@
 interface:
   display_name: "Perplexity Deep Research"
-  short_description: "Глубокое исследование через Perplexity"
+  short_description: "Глубокое исследование Perplexity для Codex и Windsurf"
   brand_color: "#1D4ED8"
   default_prompt: "Используй $perplexity_deep_research для глубокого исследования важного вопроса и верни краткий вывод со ссылками."
 

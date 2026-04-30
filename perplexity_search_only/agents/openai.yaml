@@ -1,8 +1,8 @@
 interface:
   display_name: "Perplexity Search"
-  short_description: "Недорогой поиск через Perplexity MCP"
+  short_description: "Недорогой поиск Perplexity для Codex и Windsurf"
   brand_color: "#111827"
-  default_prompt: "Используй $perplexity_search_only, чтобы выполнить недорогой поиск Perplexity и вернуть ссылки с короткими пояснениями."
+  default_prompt: "Используй $perplexity_search_only для недорогого поиска Perplexity и верни ссылки с короткими пояснениями."
 
 dependencies:
   tools:

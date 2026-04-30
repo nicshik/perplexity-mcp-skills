@@ -1,6 +1,6 @@
 interface:
   display_name: "Perplexity Pro Search"
-  short_description: "Pro Search через Sonar Pro"
+  short_description: "Perplexity Pro Search для Codex и Windsurf"
   brand_color: "#0F766E"
   default_prompt: "Используй $perplexity-pro-search для одного запроса Perplexity Pro Search, отдавай приоритет официальным источникам и верни краткий ответ со ссылками."
 

@@ -1,8 +1,13 @@
 # Perplexity MCP Skills
 
-Набор навыков Codex для Perplexity: дешевый поиск, глубокое исследование, Pro Search и извлечение содержимого страниц по URL.
+Набор Perplexity skills для Codex и Windsurf: дешевый поиск, глубокое исследование, Pro Search и извлечение содержимого страниц по URL.
 
 [🇬🇧 Read in English](README.en.md)
+
+Репозиторий поддерживает два способа использования:
+
+- `Codex` — через явные skill-вызовы вида `$perplexity_*`;
+- `Windsurf` — через workspace/global skills `@perplexity-*` и workflows `/perplexity-*`.
 
 Навыки разделены намеренно. Так проще контролировать цену и глубину запроса: быстрый поиск не должен случайно превращаться в дорогое исследование, а чтение конкретного URL не должно смешиваться с обычным поиском.
 
@@ -18,7 +23,7 @@
 
 Если дать агенту один общий доступ ко всем инструментам, он может сам выбрать, чем пользоваться для конкретного запроса. Такой автоматический выбор удобен, но расход становится менее предсказуемым: простой запрос может быть обработан более тяжелым инструментом, чем вы ожидали.
 
-В этом репозитории навыки разделены, чтобы явно задавать режим работы:
+В этом репозитории навыки разделены, чтобы явно задавать режим работы независимо от того, запускаете ли вы их из Codex или Windsurf:
 
 - нужен дешевый поиск — вызывайте `$perplexity_search_only`;
 - нужен подробный разбор — вызывайте `$perplexity_deep_research`;
@@ -36,12 +41,12 @@
 
 ## Что внутри
 
-| Навык | Когда использовать | Что вызывает | Что возвращает |
-| --- | --- | --- | --- |
-| `$perplexity_search_only` | Нужно найти ссылки, источники и сниппеты | MCP `perplexity_search`, при недоступности — прямой Search API script | Список найденных страниц без ответа модели |
-| `$perplexity-pro-search` | Нужен краткий ответ с источниками, но не глубокое исследование | Sonar Pro API с `search_type=pro` | Ответ, источники, расход и журнал шагов |
-| `$perplexity_deep_research` | Нужен широкий разбор темы по многим источникам | MCP `perplexity_research` | Подробный отчет с ссылками |
-| `$perplexity-fetch-url-content` | Нужно прочитать уже известные URL | Sonar Pro API и встроенный `fetch_url_content` | Извлечение содержимого страниц и проверка, какие URL были прочитаны |
+| Режим | Codex | Windsurf | Когда использовать | Что вызывает |
+| --- | --- | --- | --- | --- |
+| Search only | `$perplexity_search_only` | `@perplexity-search` / `/perplexity-search` | Нужно найти ссылки, источники и сниппеты | MCP `perplexity_search`, при недоступности — прямой Search API script |
+| Pro Search | `$perplexity-pro-search` | `@perplexity-pro` / `/perplexity-pro` | Нужен краткий ответ с источниками, но не глубокое исследование | Sonar Pro API с `search_type=pro` |
+| Deep Research | `$perplexity_deep_research` | `@perplexity-research` / `/perplexity-research` | Нужен широкий разбор темы по многим источникам | MCP `perplexity_research` |
+| Fetch URL | `$perplexity-fetch-url-content` | `@perplexity-fetch-url` / `/perplexity-fetch-url` | Нужно прочитать уже известные URL | Sonar Pro API и встроенный `fetch_url_content` |
 
 ## Быстрая установка
 
@@ -131,7 +136,9 @@ git clone https://github.com/nicshik/perplexity-mcp-skills.git
 cd perplexity-mcp-skills
 ```
 
-### 4. Установите навыки для Codex
+### 4. Подключите способ вызова в вашей среде
+
+#### Вариант A: Codex
 
 ```bash
 ./scripts/install_to_codex.sh
@@ -139,7 +146,16 @@ cd perplexity-mcp-skills
 
 Установщик копирует навыки в `${CODEX_HOME:-$HOME/.codex}/skills`.
 
-### 5. Используйте Skills и Workflows для Windsurf
+После этого навыки доступны как явные вызовы:
+
+```text
+$perplexity_search_only <запрос>
+$perplexity-pro-search <запрос>
+$perplexity_deep_research <запрос>
+$perplexity-fetch-url-content <url> [url ...]
+```
+
+#### Вариант B: Windsurf
 
 Для Windsurf в репозитории есть три уровня интеграции:
 
@@ -159,18 +175,7 @@ PERPLEXITY_API_KEY="ваш_ключ" ./scripts/install_to_windsurf.sh
 - workflows в `~/.codeium/windsurf/global_workflows/`;
 - MCP-конфиг в `~/.codeium/windsurf/mcp_config.json`.
 
-### 6. Перезапустите Codex или Windsurf
-
-После перезапуска Codex навыки можно вызывать явно:
-
-```text
-$perplexity_search_only <запрос>
-$perplexity-pro-search <запрос>
-$perplexity_deep_research <запрос>
-$perplexity-fetch-url-content <url> [url ...]
-```
-
-В Windsurf используйте короткие ручные вызовы:
+После перезапуска Windsurf используйте короткие ручные вызовы:
 
 ```text
 @perplexity-search <запрос>
@@ -190,9 +195,9 @@ $perplexity-fetch-url-content <url> [url ...]
 
 ## Как выбрать навык
 
-### Быстрый запуск в Windsurf
+### Быстрый выбор между Codex и Windsurf
 
-В Windsurf не нужно писать длинные фразы с названиями внутренних MCP-методов. Используйте `@` для Skills или `/` для Workflows:
+Если вы работаете в `Codex`, используйте явные skill-вызовы `$perplexity_*`. Если вы работаете в `Windsurf`, используйте `@` для Skills или `/` для Workflows.
 
 | Задача | Windsurf Skill | Windsurf Workflow | Codex Skill |
 | --- | --- | --- | --- |
