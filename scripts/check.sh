@@ -9,8 +9,16 @@ cd "$ROOT_DIR"
 required_files=(
   README.md
   README.ru.md
+  AGENTS.md
   skills_manifest.yaml
   .github/workflows/ci.yml
+  .cursor/mcp.json
+  .cursor/rules/perplexity.mdc
+  .mcp.json
+  .claude/skills/perplexity-search-only/SKILL.md
+  .claude/skills/perplexity-pro-search/SKILL.md
+  .claude/skills/perplexity-deep-research/SKILL.md
+  .claude/skills/perplexity-fetch-url/SKILL.md
   perplexity_search_only/SKILL.md
   perplexity-pro-search/SKILL.md
   perplexity_deep_research/SKILL.md
@@ -52,8 +60,14 @@ python3 perplexity-pro-search/scripts/pro_search.py --help >/dev/null
 
 grep -q 'Codex' README.md
 grep -q 'Windsurf' README.md
+grep -q 'Cursor' README.md
+grep -q 'Claude Code' README.md
+grep -q 'Antigravity' README.md
 grep -q 'Codex' README.ru.md
 grep -q 'Windsurf' README.ru.md
+grep -q 'Cursor' README.ru.md
+grep -q 'Claude Code' README.ru.md
+grep -q 'Antigravity' README.ru.md
 grep -q 'What To Pick In 30 Seconds' README.md
 grep -q 'Что выбрать за 30 секунд' README.ru.md
 grep -q 'Compatibility Matrix' README.md
@@ -78,5 +92,8 @@ grep -q 'purpose: "Search only mode through Perplexity MCP with direct Search AP
 grep -q 'purpose: "Deep Research mode through Perplexity MCP"' skills_manifest.yaml
 grep -q 'purpose: "Pro Search mode through Sonar Pro"' skills_manifest.yaml
 grep -q 'purpose: "Fetch URL mode through Sonar Pro fetch_url_content"' skills_manifest.yaml
+grep -q 'cursor_mcp: ".cursor/mcp.json"' skills_manifest.yaml
+grep -q 'claude_mcp: ".mcp.json"' skills_manifest.yaml
+grep -q 'shared_agent_rules: "AGENTS.md"' skills_manifest.yaml
 
 echo "Smoke checks passed."

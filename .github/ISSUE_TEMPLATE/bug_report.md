@@ -12,7 +12,7 @@ Describe the bug briefly.
 
 ## Environment
 
-- Runtime: Codex / Windsurf / other
+- Runtime: Codex / Windsurf / Cursor / Claude Code / Antigravity / other
 - Mode: Search only / Pro Search / Deep Research / Fetch URL
 - Invocation used:
 

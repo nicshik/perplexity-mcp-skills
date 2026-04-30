@@ -2,7 +2,7 @@
 
 ## Scope
 
-This repository is intentionally narrow: it packages Perplexity modes for Codex and Windsurf without hiding cost, depth, or invocation semantics.
+This repository is intentionally narrow: it packages Perplexity modes for Codex, Windsurf, Cursor, Claude Code, and AGENTS-compatible tools without hiding cost, depth, or invocation semantics.
 
 Prefer changes that keep these guarantees explicit:
 
@@ -15,6 +15,9 @@ Prefer changes that keep these guarantees explicit:
 1. Keep invocation names stable:
    - Codex: `$perplexity_search_only`, `$perplexity-pro-search`, `$perplexity_deep_research`, `$perplexity-fetch-url-content`
    - Windsurf: `@perplexity-search`, `@perplexity-pro`, `@perplexity-research`, `@perplexity-fetch-url`
+   - Cursor: `.cursor/mcp.json` plus `.cursor/rules/perplexity.mdc`
+   - Claude Code: `.mcp.json` plus `.claude/skills/`
+   - Antigravity and other AGENTS-compatible tools: `AGENTS.md`
    - Workflows: `/perplexity-search`, `/perplexity-pro`, `/perplexity-research`, `/perplexity-fetch-url`
 2. Run the local smoke checks:
 

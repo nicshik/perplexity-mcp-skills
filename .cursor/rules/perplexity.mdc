@@ -1,0 +1,15 @@
+---
+description: Route Perplexity tasks into the correct mode without silently escalating cost or depth.
+alwaysApply: false
+---
+
+- This repository exposes four separate Perplexity modes: Search only, Pro Search, Deep Research, and Fetch URL.
+- Use Search only for links, snippets, and source discovery.
+- Use Pro Search for concise sourced answers with `search_type=pro`.
+- Use Deep Research only when broad multi-source analysis is explicitly needed.
+- Use Fetch URL for reading one or more known URLs.
+- Keep mode boundaries explicit and do not silently switch one mode into another.
+- Preferred MCP path for Search only is `perplexity_search`.
+- Search only fallback command: `python3 perplexity_search_only/scripts/search_only.py "<query>" --json`
+- Pro Search command: `python3 perplexity-pro-search/scripts/pro_search.py "<query>" --context-size medium --json`
+- Fetch URL command: `python3 perplexity-fetch-url-content/scripts/fetch_url_content.py <url> [url ...] --json`

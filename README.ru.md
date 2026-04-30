@@ -1,15 +1,18 @@
 # Perplexity MCP Skills
 
-Набор Perplexity modes для Codex и Windsurf: дешевый поиск, Pro Search, deep research и чтение конкретных URL.
+Набор Perplexity modes для Codex, Windsurf, Cursor, Claude Code и Antigravity: дешевый поиск, Pro Search, deep research и чтение конкретных URL.
 
 [🇬🇧 Read in English](README.md)
 
 ## Что это
 
-Репозиторий упаковывает четыре раздельных режима работы с Perplexity, чтобы контролировать цену, глубину и способ вызова:
+Репозиторий упаковывает четыре раздельных режима работы с Perplexity, чтобы контролировать цену, глубину и способ вызова в нескольких agent runtimes:
 
 - `Codex` использует явные skill-вызовы `$perplexity_*`.
 - `Windsurf` использует skills `@perplexity-*` и workflows `/perplexity-*`.
+- `Cursor` использует project MCP config и project rules.
+- `Claude Code` использует project MCP config и project skills.
+- `Antigravity` использует shared `AGENTS.md` guidance и те же repo-local scripts.
 
 Разделение намеренное: быстрый поиск не должен незаметно превращаться в дорогое исследование, а чтение конкретного URL не должно смешиваться с обычным поиском.
 
@@ -151,6 +154,31 @@ PERPLEXITY_API_KEY="ваш_ключ" ./scripts/install_to_windsurf.sh
 /perplexity-fetch-url
 ```
 
+#### Cursor
+
+Поддержка Cursor добавлена через:
+
+- project MCP config в `.cursor/mcp.json`
+- project rule в `.cursor/rules/perplexity.mdc`
+- те же repo-local direct scripts
+
+После открытия репозитория в Cursor агент может использовать настроенный MCP server и project rule. Для CLI-проверки Cursor документирует `cursor-agent mcp list` и `cursor-agent mcp list-tools <identifier>` для просмотра настроенных серверов и инструментов. Источники: официальные docs Cursor по MCP и Rules.
+
+#### Claude Code
+
+Поддержка Claude Code добавлена через:
+
+- project MCP config в `.mcp.json`
+- project skills в `.claude/skills/`
+
+Claude Code документирует project-scoped MCP config через `.mcp.json` и project skills через `.claude/skills/`. После открытия репозитория в Claude Code MCP server и project skills доступны внутри проекта. Источники: официальные docs Claude Code по MCP и Agent Skills.
+
+#### Antigravity
+
+Поддержка Antigravity добавлена через shared repository guidance в `AGENTS.md` и те же repo-local direct scripts.
+
+В этом rollout не добавлялся tool-specific Antigravity MCP config file, потому что репозиторий не кодирует официально подтвержденный стабильный project config path для Antigravity. Поддерживаемый путь здесь — shared routing guidance плюс локальные scripts и MCP setup, которые уже используются в workspace.
+
 ## Примеры по задачам
 
 ### Найти источники быстро и дешево
@@ -234,6 +262,10 @@ PERPLEXITY_API_KEY="ваш_ключ" ./scripts/install_to_windsurf.sh
 | Проблема | Что проверить |
 | --- | --- |
 | `perplexity_search` не экспонирован в session | Используйте direct fallback `perplexity_search_only/scripts/search_only.py --json` или соответствующий Windsurf skill path |
+| Cursor не видит MCP server Perplexity | Проверьте `.cursor/mcp.json`, `PERPLEXITY_API_KEY` и затем `cursor-agent mcp list` |
+| Claude Code не видит MCP server Perplexity | Проверьте `.mcp.json`, `PERPLEXITY_API_KEY` и затем `claude mcp list` |
+| Claude Code skill не срабатывает | Проверьте `.claude/skills/` и перезапустите Claude Code, чтобы project skills перечитались |
+| Antigravity не подхватывает routing guidance | Проверьте наличие `AGENTS.md`, затем используйте repo-local scripts напрямую |
 | `PERPLEXITY_API_KEY` не найден | Проверьте shell env, `~/.codex/config.toml`, `CODEX_HOME/config.toml`, `~/.codeium/windsurf/mcp_config.json` |
 | Ошибка billing/auth в Sonar API | Убедитесь, что в консоли Perplexity пополнен API balance, а не только активна Pro subscription |
 | URL не попал в `fetched_urls` | Запустите Fetch URL mode с `--require-fetch` и проверьте `missing_requested_urls` |
@@ -261,6 +293,11 @@ perplexity-fetch-url-content/        # Codex skill + fetch_url_content script
 .windsurf/skills/                    # Windsurf skills
 .windsurf/workflows/                 # Windsurf workflows
 .windsurf/rules/                     # Shared Windsurf routing rules
+.cursor/mcp.json                     # Cursor project MCP config
+.cursor/rules/                       # Cursor project rule
+.claude/skills/                      # Claude Code project skills
+.mcp.json                            # Claude Code project MCP config
+AGENTS.md                            # Shared cross-tool routing guidance
 scripts/install_to_codex.sh          # Global Codex install
 scripts/install_to_windsurf.sh       # Global Windsurf install
 scripts/check.sh                     # Offline-safe smoke verification
@@ -273,4 +310,6 @@ skills_manifest.yaml                 # Bundle manifest and install/source-of-tru
 - Включенный MCP-сервер в UI не гарантирует, что tool будет экспонирован в конкретной agent session.
 - Для этого случая у search mode есть direct fallback через Search API.
 - `skills_manifest.yaml` остается легковесным source of truth для install paths и Windsurf mappings.
+- Cursor MCP project config следует документированному пути `.cursor/mcp.json`, а project rules — `.cursor/rules`.
+- Claude Code project MCP config следует документированному пути `.mcp.json`, а project skills — `.claude/skills/`.
 - `LICENSE` в этот rollout не добавлялась: текущий проход ограничен docs, verification и repo metadata.
