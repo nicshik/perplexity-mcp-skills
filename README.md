@@ -68,6 +68,10 @@
   - request cost: `$0.01`
   - input tokens: `21` -> `$0.00006`
   - output tokens: `542` -> `$0.00813`
+- `/perplexity-fetch-url`: один недавний summary-вызов по `https://docs.perplexity.ai/docs/sonar/pro-search/tools` стоил **`$0.01894`**:
+  - request cost: `$0.014`
+  - input tokens: `122` -> `$0.00037`
+  - output tokens: `305` -> `$0.00458`
 - `/perplexity-search`: недавний пример по тому же запросу использовал `4` запроса Search API по `$0.005` и стоил **`$0.02`**.
 
 ### 2. Подключите официальный MCP-сервер Perplexity
@@ -292,6 +296,8 @@ python3 perplexity-pro-search/scripts/pro_search.py "Compare current Perplexity 
 ### `$perplexity-fetch-url-content`
 
 Режим для чтения конкретных URL. Подходит, когда страница уже известна и нужно вытащить из нее содержание.
+
+Недавний одиночный пример стоимости: summary-вызов по `https://docs.perplexity.ai/docs/sonar/pro-search/tools` стоил **`$0.01894`** (`$0.014` request cost, `122` input tokens, `305` output tokens).
 
 Что делает:
 

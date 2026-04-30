@@ -68,6 +68,10 @@ Observed cost examples for individual modes:
   - request cost: `$0.01`
   - input tokens: `21` -> `$0.00006`
   - output tokens: `542` -> `$0.00813`
+- `/perplexity-fetch-url`: one recent summary run for `https://docs.perplexity.ai/docs/sonar/pro-search/tools` cost **`$0.01894`**:
+  - request cost: `$0.014`
+  - input tokens: `122` -> `$0.00037`
+  - output tokens: `305` -> `$0.00458`
 - `/perplexity-search`: a recent example for the same query used `4` Search API requests at `$0.005` each and cost **`$0.02`**.
 
 ### 2. Add the official Perplexity MCP server
@@ -292,6 +296,8 @@ Use $perplexity_deep_research to research the current ecosystem of MCP servers f
 ### `$perplexity-fetch-url-content`
 
 A mode for reading specific URLs. Use it when the page is already known and you need to extract its content.
+
+Recent single-run cost example: a summary call for `https://docs.perplexity.ai/docs/sonar/pro-search/tools` cost **`$0.01894`** (`$0.014` request cost, `122` input tokens, `305` output tokens).
 
 What it does:
 
