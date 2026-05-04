@@ -65,8 +65,8 @@ Skill вызывается явно, потому что Pro Search дороже
 ## Recommended Commands
 
 ```bash
-python3 scripts/pro_search.py "Compare the latest TON AI agent wallet launches and explain the differences." --context-size medium --json
-python3 scripts/pro_search.py "Summarize this week's official TON docs changes." --recency week --domain docs.ton.org --json
+python3 scripts/pro_search.py "Compare the latest AI browser agent launches and explain the differences." --context-size medium --json
+python3 scripts/pro_search.py "Summarize this week's official Perplexity API documentation changes." --recency week --domain docs.perplexity.ai --json
 python3 scripts/pro_search.py "Which open-source MCP servers added Perplexity support in 2026?" --context-size high --json
 ```
 
