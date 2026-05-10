@@ -101,3 +101,16 @@ export function hasExpectedPerplexityMcpServer(filePath: string) {
     return false;
   }
 }
+
+export function hasPerplexityApiKeyInConfig(filePath: string) {
+  if (!fs.existsSync(filePath)) return false;
+  try {
+    const config = readJsonIfExists(filePath);
+    const servers = config.mcpServers as JsonObject | undefined;
+    const perplexity = servers?.perplexity as JsonObject | undefined;
+    const env = perplexity?.env as Record<string, string> | undefined;
+    return Boolean(env?.PERPLEXITY_API_KEY);
+  } catch {
+    return false;
+  }
+}

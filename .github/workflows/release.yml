@@ -54,8 +54,8 @@ jobs:
 
       - name: Publish dry run
         if: steps.npm_version.outputs.exists == 'false'
-        run: npm publish --dry-run
+        run: npm publish --dry-run --provenance
 
       - name: Publish
         if: steps.npm_version.outputs.exists == 'false'
-        run: npm publish --access public
+        run: npm publish --access public --provenance

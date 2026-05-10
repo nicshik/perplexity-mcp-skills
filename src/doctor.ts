@@ -11,7 +11,7 @@ import {
   windsurfSkillsDir,
   windsurfWorkflowsDir,
 } from "./targets.js";
-import { hasExpectedPerplexityMcpServer } from "./mcp-config.js";
+import { hasExpectedPerplexityMcpServer, hasPerplexityApiKeyInConfig } from "./mcp-config.js";
 import type { DoctorCheck, DoctorOptions } from "./types.js";
 
 function check(target: string, name: string, status: DoctorCheck["status"], message: string): DoctorCheck {
@@ -41,6 +41,17 @@ export async function doctor(options: DoctorOptions) {
 
   checks.push(check("system", "node", nodeMajor() >= 20 ? "pass" : "fail", `Node ${process.versions.node}; expected >=20`));
   checks.push(check("system", "python3", options.offline || py ? "pass" : "warn", py || "python3 was not found; direct scripts require Python"));
+
+  const hasApiKeyEnv = Boolean(process.env.PERPLEXITY_API_KEY);
+  const hasApiKeyMcp = hasPerplexityApiKeyInConfig(windsurfMcpConfigPath());
+  const apiKeyStatus = hasApiKeyEnv || hasApiKeyMcp ? "pass" : "warn";
+  const apiKeyMsg = hasApiKeyEnv
+    ? "PERPLEXITY_API_KEY found in environment"
+    : hasApiKeyMcp
+      ? "API key found in Windsurf MCP config"
+      : "PERPLEXITY_API_KEY not set; MCP server and direct scripts need it";
+  checks.push(check("system", "PERPLEXITY_API_KEY", apiKeyStatus, apiKeyMsg));
+
   checks.push(exists("system", "shell codex installer", fromRoot("scripts", "install_to_codex.sh")));
   checks.push(exists("system", "shell windsurf installer", fromRoot("scripts", "install_to_windsurf.sh")));
 
