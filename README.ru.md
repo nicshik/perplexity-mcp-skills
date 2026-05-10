@@ -259,18 +259,29 @@ Claude Code документирует project-scoped MCP config через `.mc
 
 ## Проверка
 
-Единая локальная smoke-проверка:
+Быстрая диагностика через npm CLI:
 
 ```bash
-./scripts/check.sh
+npx perplexity-mcp-skills doctor            # проверить установленные файлы, API key, Node/Python
+npx perplexity-mcp-skills doctor --offline   # без subprocess-проверок
 ```
 
-Скрипт делает offline-safe проверки:
+Проверки для разработчиков:
+
+```bash
+npm run typecheck          # валидация TypeScript типов
+npm test                   # CLI smoke test (build + help + doctor + install dry-run)
+npm run check              # полная offline smoke-проверка (scripts/check.sh)
+npm run pack:dry-run       # проверка содержимого npm-пакета
+```
+
+`scripts/check.sh` делает offline-safe проверки:
 
 - `python3 -m py_compile` для `perplexity_common.py` и direct scripts
 - `search_only.py --dry-run --json`
 - `fetch_url_content.py --dry-run --json`
 - `pro_search.py --help`
+- npm CLI build, typecheck и install dry-run
 - проверку ключевых invocation names в README и `.windsurf/`
 
 Запуск с реальным обращением к Perplexity оставлен ручным, потому что он расходует API-кредиты.
@@ -289,6 +300,7 @@ Claude Code документирует project-scoped MCP config через `.mc
 | URL не попал в `fetched_urls` | Запустите Fetch URL mode с `--require-fetch` и проверьте `missing_requested_urls` |
 | Песочница блокирует сеть | Повторите тот же script с повышенным доступом, не подменяя режим другим mode |
 | CI падает на smoke checks | Сначала локально запустите `./scripts/check.sh`, затем сравните README invocation names и ожидаемую структуру репозитория |
+| Быстрая проверка здоровья | Запустите `npx perplexity-mcp-skills doctor` для проверки установленных файлов, API key и системных требований |
 
 ## Примеры стоимости
 
@@ -304,6 +316,9 @@ Deep Research почти всегда заметно дороже остальн
 ## Структура репозитория
 
 ```text
+src/                                 # TypeScript CLI source (install, doctor, sync, uninstall)
+dist/                                # Compiled CLI (built by prepack / npm run build)
+package.json                         # npm package metadata, scripts, and file whitelist
 perplexity_search_only/              # Codex skill + direct Search API fallback
 perplexity-pro-search/               # Codex skill + Sonar Pro Search script
 perplexity_deep_research/            # Codex skill for MCP deep research
@@ -316,9 +331,10 @@ perplexity-fetch-url-content/        # Codex skill + fetch_url_content script
 .claude/skills/                      # Claude Code project skills
 .mcp.json                            # Claude Code project MCP config
 AGENTS.md                            # Shared cross-tool routing guidance
-scripts/install_to_codex.sh          # Global Codex install
-scripts/install_to_windsurf.sh       # Global Windsurf install
+scripts/install_to_codex.sh          # Legacy global Codex install
+scripts/install_to_windsurf.sh       # Legacy global Windsurf install
 scripts/check.sh                     # Offline-safe smoke verification
+docs/releasing.md                    # Release process documentation
 perplexity_common.py                 # Shared direct-script helpers
 skills_manifest.yaml                 # Bundle manifest and install/source-of-truth paths
 ```
@@ -330,4 +346,4 @@ skills_manifest.yaml                 # Bundle manifest and install/source-of-tru
 - `skills_manifest.yaml` остается легковесным source of truth для install paths и Windsurf mappings.
 - Cursor MCP project config следует документированному пути `.cursor/mcp.json`, а project rules — `.cursor/rules`.
 - Claude Code project MCP config следует документированному пути `.mcp.json`, а project skills — `.claude/skills/`.
-- `LICENSE` в этот rollout не добавлялась: текущий проход ограничен docs, verification и repo metadata.
+- Проект выпущен под лицензией MIT. Подробности см. в файле `LICENSE`.

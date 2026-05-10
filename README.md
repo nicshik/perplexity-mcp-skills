@@ -259,18 +259,29 @@ The mode for reading specific URLs through the built-in Sonar Pro tool `fetch_ur
 
 ## Verification
 
-One offline-safe local smoke check:
+Quick diagnostics with the npm CLI:
 
 ```bash
-./scripts/check.sh
+npx perplexity-mcp-skills doctor            # check installed files, API key, Node/Python
+npx perplexity-mcp-skills doctor --offline   # skip subprocess checks
 ```
 
-The script runs:
+Developer checks:
+
+```bash
+npm run typecheck          # TypeScript type validation
+npm test                   # CLI smoke test (build + help + doctor + install dry-run)
+npm run check              # full offline smoke check (scripts/check.sh)
+npm run pack:dry-run       # verify npm package contents
+```
+
+`scripts/check.sh` runs:
 
 - `python3 -m py_compile` for `perplexity_common.py` and the direct scripts
 - `search_only.py --dry-run --json`
 - `fetch_url_content.py --dry-run --json`
 - `pro_search.py --help`
+- npm CLI build, typecheck, and install dry-run
 - a grep check for key invocation names in README and `.windsurf/`
 
 Live Perplexity requests are intentionally left out of CI and this smoke check because they spend API credits.
@@ -289,6 +300,7 @@ Live Perplexity requests are intentionally left out of CI and this smoke check b
 | A URL is missing from `fetched_urls` | Run Fetch URL mode with `--require-fetch` and inspect `missing_requested_urls` |
 | The sandbox blocks network access | Re-run the same script with elevated access instead of switching to another mode |
 | CI fails on smoke checks | Run `./scripts/check.sh` locally first, then compare README invocation names and the expected repository structure |
+| Quick health check | Run `npx perplexity-mcp-skills doctor` to inspect installed files, API key, and system requirements |
 
 ## Cost Notes
 
@@ -304,6 +316,9 @@ Deep Research is almost always much more expensive than the other modes.
 ## Repository Structure
 
 ```text
+src/                                 # TypeScript CLI source (install, doctor, sync, uninstall)
+dist/                                # Compiled CLI (built by prepack / npm run build)
+package.json                         # npm package metadata, scripts, and file whitelist
 perplexity_search_only/              # Codex skill + direct Search API fallback
 perplexity-pro-search/               # Codex skill + Sonar Pro Search script
 perplexity_deep_research/            # Codex skill for MCP deep research
@@ -316,9 +331,10 @@ perplexity-fetch-url-content/        # Codex skill + fetch_url_content script
 .claude/skills/                      # Claude Code project skills
 .mcp.json                            # Claude Code project MCP config
 AGENTS.md                            # Shared cross-tool routing guidance
-scripts/install_to_codex.sh          # Global Codex install
-scripts/install_to_windsurf.sh       # Global Windsurf install
+scripts/install_to_codex.sh          # Legacy global Codex install
+scripts/install_to_windsurf.sh       # Legacy global Windsurf install
 scripts/check.sh                     # Offline-safe smoke verification
+docs/releasing.md                    # Release process documentation
 perplexity_common.py                 # Shared direct-script helpers
 skills_manifest.yaml                 # Bundle manifest and install/source-of-truth paths
 ```
@@ -330,4 +346,4 @@ skills_manifest.yaml                 # Bundle manifest and install/source-of-tru
 - `skills_manifest.yaml` remains the lightweight source of truth for install paths and Windsurf mappings.
 - Cursor MCP project config follows Cursor's documented `.cursor/mcp.json` path and project rules follow `.cursor/rules`.
 - Claude Code project MCP config follows Anthropic's documented `.mcp.json` path and project skills follow `.claude/skills/`.
-- No `LICENSE` was added in this rollout: this pass is intentionally limited to docs, verification, and repo metadata.
+- This project is released under the MIT license. See `LICENSE` for details.
