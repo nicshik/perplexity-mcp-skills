@@ -1,6 +1,6 @@
 {
   "name": "perplexity-mcp-skills",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Install Perplexity MCP skills, workflows, and direct API fallbacks for agentic coding tools.",
   "type": "module",
   "license": "MIT",
