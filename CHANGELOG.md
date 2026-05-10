@@ -6,6 +6,12 @@ All notable changes to this repository should be documented in this file.
 
 _No unreleased changes._
 
+## 0.2.1 — 2026-05-10
+
+- Added `PERPLEXITY_API_KEY` check to `doctor` (checks env and Windsurf MCP config).
+- Added `--provenance` attestation to npm publish in release workflow.
+- CI now tests on both Node 20 (minimum engine) and Node 24.
+
 ## 0.2.0 — 2026-05-10
 
 - Added an npm/npx CLI installer with `install`, `doctor`, `sync`, and `uninstall` commands for Codex, Windsurf, Cursor, Claude Code, and all-target setup.
