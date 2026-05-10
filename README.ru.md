@@ -48,23 +48,44 @@
 - Для Sonar API нужен отдельный баланс в [консоли Perplexity](https://console.perplexity.ai/).
 - Если баланс пустой, запросы могут завершаться ошибками авторизации или оплаты даже при корректном ключе.
 
-### 2. Подключите официальный MCP-сервер Perplexity
+### 2. Установите интеграции через npm
 
-#### Codex
+Основной способ установки — npm CLI:
+
+```bash
+npx perplexity-mcp-skills install codex
+npx perplexity-mcp-skills install windsurf --api-key "ваш_ключ"
+npx perplexity-mcp-skills install cursor
+npx perplexity-mcp-skills install claude
+```
+
+Или установите все поддерживаемые targets:
+
+```bash
+npx perplexity-mcp-skills install all --api-key "ваш_ключ"
+```
+
+Команды обслуживания:
+
+```bash
+npx perplexity-mcp-skills doctor
+npx perplexity-mcp-skills sync windsurf
+npx perplexity-mcp-skills uninstall codex --dry-run
+```
+
+Используйте `--dry-run`, чтобы предварительно увидеть изменения, `--force` для замены package-owned файлов и `--no-key`, чтобы поставить файлы без изменения MCP-конфига с секретами.
+
+### 3. MCP-конфигурация
+
+Для Windsurf команда `install windsurf --api-key ...` добавляет официальный MCP-сервер Perplexity в `~/.codeium/windsurf/mcp_config.json`.
+
+Для Codex MCP-сервер можно добавить так:
 
 ```bash
 codex mcp add perplexity --env PERPLEXITY_API_KEY="ваш_ключ" -- npx -y @perplexity-ai/mcp-server
 ```
 
-#### Windsurf
-
-```bash
-PERPLEXITY_API_KEY="ваш_ключ" ./scripts/install_to_windsurf.sh
-```
-
-Скрипт добавляет MCP-сервер Perplexity в `~/.codeium/windsurf/mcp_config.json`.
-
-Можно также добавить MCP вручную:
+Форма MCP config:
 
 ```json
 {
@@ -94,14 +115,9 @@ PERPLEXITY_API_KEY="ваш_ключ" ./scripts/install_to_windsurf.sh
 python3 -m pip install -r requirements.txt
 ```
 
-### 3. Склонируйте репозиторий
+### 4. Legacy clone-based install
 
-```bash
-git clone https://github.com/nicshik/perplexity-mcp-skills.git
-cd perplexity-mcp-skills
-```
-
-### 4. Подключите способ вызова в вашей среде
+Старые shell-установщики остаются доступными, если вы сознательно работаете из локального clone:
 
 #### Codex
 

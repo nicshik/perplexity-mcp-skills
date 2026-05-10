@@ -7,11 +7,17 @@ ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$ROOT_DIR"
 
 required_files=(
+  package.json
+  package-lock.json
+  tsconfig.json
   README.md
   README.ru.md
+  LICENSE
+  docs/releasing.md
   AGENTS.md
   skills_manifest.yaml
   .github/workflows/ci.yml
+  .github/workflows/release.yml
   .cursor/mcp.json
   .cursor/rules/perplexity.mdc
   .mcp.json
@@ -34,6 +40,11 @@ required_files=(
   perplexity_search_only/scripts/search_only.py
   perplexity-pro-search/scripts/pro_search.py
   perplexity-fetch-url-content/scripts/fetch_url_content.py
+  src/cli.ts
+  src/install.ts
+  src/doctor.ts
+  src/sync.ts
+  src/uninstall.ts
 )
 
 for path in "${required_files[@]}"; do
@@ -58,6 +69,12 @@ python3 perplexity-fetch-url-content/scripts/fetch_url_content.py \
 
 python3 perplexity-pro-search/scripts/pro_search.py --help >/dev/null
 
+npm run typecheck >/dev/null
+npm run build >/dev/null
+node dist/cli.js --help >/dev/null
+node dist/cli.js install all --dry-run --no-key --yes >/dev/null
+node dist/cli.js doctor --target all --offline --json >/dev/null || test "$?" -eq 1
+
 grep -q 'Codex' README.md
 grep -q 'Windsurf' README.md
 grep -q 'Cursor' README.md
@@ -74,6 +91,8 @@ grep -q 'Compatibility Matrix' README.md
 grep -q 'Матрица совместимости' README.ru.md
 grep -q 'Troubleshooting' README.md
 grep -q 'Troubleshooting' README.ru.md
+grep -q 'npx perplexity-mcp-skills install' README.md
+grep -q 'npx perplexity-mcp-skills install' README.ru.md
 
 grep -R -q '\$perplexity_search_only' README.md README.ru.md .windsurf
 grep -R -q '\$perplexity-pro-search' README.md README.ru.md .windsurf

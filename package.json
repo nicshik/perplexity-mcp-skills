@@ -1,0 +1,81 @@
+{
+  "name": "perplexity-mcp-skills",
+  "version": "0.2.0",
+  "description": "Install Perplexity MCP skills, workflows, and direct API fallbacks for agentic coding tools.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Nikolay Shik",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nicshik/perplexity-mcp-skills.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nicshik/perplexity-mcp-skills/issues"
+  },
+  "homepage": "https://github.com/nicshik/perplexity-mcp-skills#readme",
+  "bin": {
+    "perplexity-mcp-skills": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    ".claude",
+    ".cursor",
+    ".mcp.json",
+    ".windsurf",
+    "AGENTS.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "docs",
+    "README.md",
+    "README.ru.md",
+    "LICENSE",
+    "perplexity-fetch-url-content/SKILL.md",
+    "perplexity-fetch-url-content/agents",
+    "perplexity-fetch-url-content/references",
+    "perplexity-fetch-url-content/scripts/fetch_url_content.py",
+    "perplexity-pro-search/SKILL.md",
+    "perplexity-pro-search/agents",
+    "perplexity-pro-search/references",
+    "perplexity-pro-search/scripts/pro_search.py",
+    "perplexity_common.py",
+    "perplexity_deep_research/SKILL.md",
+    "perplexity_deep_research/agents",
+    "perplexity_deep_research/references",
+    "perplexity_search_only/SKILL.md",
+    "perplexity_search_only/agents",
+    "perplexity_search_only/references",
+    "perplexity_search_only/scripts/search_only.py",
+    "requirements.txt",
+    "scripts",
+    "skills_manifest.yaml"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test:cli": "npm run build && node dist/cli.js --help >/dev/null && (node dist/cli.js doctor --target all --offline --json >/dev/null || test $? -eq 1) && node dist/cli.js install all --dry-run --no-key --yes >/dev/null",
+    "test": "npm run test:cli",
+    "check": "./scripts/check.sh",
+    "prepack": "npm run build",
+    "pack:dry-run": "npm pack --dry-run",
+    "publish:dry-run": "npm publish --dry-run"
+  },
+  "dependencies": {
+    "commander": "^14.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "typescript": "^5.9.3"
+  },
+  "keywords": [
+    "perplexity",
+    "mcp",
+    "codex",
+    "windsurf",
+    "cursor",
+    "claude",
+    "agent-skills"
+  ]
+}

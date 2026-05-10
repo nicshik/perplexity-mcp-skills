@@ -22,11 +22,28 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Install Python dependencies
         run: python3 -m pip install -r requirements.txt
+
+      - name: Install npm dependencies
+        run: npm ci
 
       - name: Compile Python files
         run: python3 -m py_compile perplexity_common.py perplexity_search_only/scripts/search_only.py perplexity-pro-search/scripts/pro_search.py perplexity-fetch-url-content/scripts/fetch_url_content.py
 
       - name: Run offline smoke checks
         run: ./scripts/check.sh
+
+      - name: Typecheck npm CLI
+        run: npm run typecheck
+
+      - name: Test npm CLI
+        run: npm test
+
+      - name: Verify npm package contents
+        run: npm run pack:dry-run

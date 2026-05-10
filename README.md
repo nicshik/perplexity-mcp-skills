@@ -48,23 +48,44 @@ Important billing note:
 - Sonar API uses a separate balance in the [Perplexity console](https://console.perplexity.ai/).
 - If the balance is empty, requests may fail with authorization or billing errors even when the key is configured correctly.
 
-### 2. Add the official Perplexity MCP server
+### 2. Install integrations with npm
 
-#### Codex
+Use the npm CLI as the primary installer:
+
+```bash
+npx perplexity-mcp-skills install codex
+npx perplexity-mcp-skills install windsurf --api-key "your_key"
+npx perplexity-mcp-skills install cursor
+npx perplexity-mcp-skills install claude
+```
+
+Or install every supported target:
+
+```bash
+npx perplexity-mcp-skills install all --api-key "your_key"
+```
+
+Useful maintenance commands:
+
+```bash
+npx perplexity-mcp-skills doctor
+npx perplexity-mcp-skills sync windsurf
+npx perplexity-mcp-skills uninstall codex --dry-run
+```
+
+Use `--dry-run` to preview writes, `--force` to replace package-owned files, and `--no-key` to install files without changing secret-bearing MCP config.
+
+### 3. MCP configuration
+
+For Windsurf, `install windsurf --api-key ...` adds the official Perplexity MCP server to `~/.codeium/windsurf/mcp_config.json`.
+
+For Codex, you can add the official MCP server with:
 
 ```bash
 codex mcp add perplexity --env PERPLEXITY_API_KEY="your_key" -- npx -y @perplexity-ai/mcp-server
 ```
 
-#### Windsurf
-
-```bash
-PERPLEXITY_API_KEY="your_key" ./scripts/install_to_windsurf.sh
-```
-
-The script adds the Perplexity MCP server to `~/.codeium/windsurf/mcp_config.json`.
-
-You can also add MCP manually:
+The MCP server shape is:
 
 ```json
 {
@@ -94,14 +115,9 @@ Before running direct scripts, install dependencies:
 python3 -m pip install -r requirements.txt
 ```
 
-### 3. Clone the repository
+### 4. Legacy clone-based install
 
-```bash
-git clone https://github.com/nicshik/perplexity-mcp-skills.git
-cd perplexity-mcp-skills
-```
-
-### 4. Enable invocation in your environment
+The older shell installers remain available when you intentionally work from a local clone:
 
 #### Codex
 
